@@ -13,9 +13,16 @@ import {
   stats,
 } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "About Us",
+  ...buildOgMeta({
+    title: "About Us",
+    description:
+      "Learn about Xenial Xcel Consult (RL-1221) — a government-approved, MOEWOE consented, BAIRA member recruitment agency in Bangladesh with 50+ team members and 500+ employer partners.",
+    path: "/about",
+  }),
 };
 
 const phaseBlurbs = [
@@ -30,6 +37,7 @@ const phaseBlurbs = [
 export default function AboutPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "About Us", href: "/about" }]} />
       <PageHero
         eyebrow="About us"
         title="Know us better"

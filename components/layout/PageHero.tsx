@@ -37,7 +37,7 @@ export function PageHero({ eyebrow, title, description, bgImage }: PageHeroProps
       )}
       {!bgImage && <div className="absolute inset-0 z-0 bg-primary/95" />}
 
-      <div className="relative z-10 mx-auto max-w-4xl space-y-6 lg:text-center">
+      <div className="relative z-10 mx-auto max-w-4xl space-y-6 text-center flex flex-col items-center">
         <Badge
           variant="gold"
           className="bg-accent/10 border-accent/30 text-accent uppercase tracking-widest px-4 py-2 backdrop-blur-sm shadow-xl"

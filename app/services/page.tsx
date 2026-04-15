@@ -7,14 +7,23 @@ import { PageHero } from "@/components/layout/PageHero";
 import { FinalCtaBand } from "@/components/layout/FinalCtaBand";
 import { GlobalPracticeAreas } from "@/components/services/GlobalPracticeAreas";
 import { Button } from "@/components/ui/button";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Services",
+  ...buildOgMeta({
+    title: "Services",
+    description:
+      "Comprehensive manpower recruitment services across manufacturing, construction, service industries, plantation, agriculture, and engineering. RL-1221 licensed agency.",
+    path: "/services",
+  }),
 };
 
 export default function ServicesPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "Services", href: "/services" }]} />
+      <ServiceJsonLd name="International Manpower Recruitment" description="End-to-end manpower recruitment services from demand letter to deployment across manufacturing, construction, service industries, plantation, agriculture, and engineering sectors." />
       <PageHero
         eyebrow="Our Expertise"
         title="Multidimensional Strategic Execution"

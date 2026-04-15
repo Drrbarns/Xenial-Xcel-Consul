@@ -3,14 +3,22 @@ import { RequestManpowerWizard } from "@/components/forms/RequestManpowerWizard"
 import { Section } from "@/components/layout/Section";
 import { PageHero } from "@/components/layout/PageHero";
 import { FinalCtaBand } from "@/components/layout/FinalCtaBand";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Request Manpower",
+  ...buildOgMeta({
+    title: "Request Manpower",
+    description:
+      "Submit your manpower requirement to Xenial Xcel Consult. Multi-step form for company info, sector, roles, quantity, and timeline. Response within one business day.",
+    path: "/request",
+  }),
 };
 
 export default function RequestPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "Request Manpower", href: "/request" }]} />
       <PageHero
         eyebrow="Request Manpower"
         title="Tell Us Your Requirement"

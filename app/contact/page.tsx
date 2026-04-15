@@ -8,15 +8,21 @@ import { PageHero } from "@/components/layout/PageHero";
 import { FinalCtaBand } from "@/components/layout/FinalCtaBand";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: `Reach ${company.name} for manpower inquiries, demand letters, and deployment support. Dhaka office with digital updates and 24/7 customer care.`,
+  ...buildOgMeta({
+    title: "Contact",
+    description: `Reach ${company.name} for manpower inquiries, demand letters, and deployment support. Dhaka office: +88 01711-565979. Digital updates and 24/7 customer care.`,
+    path: "/contact",
+  }),
 };
 
 export default function ContactPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "Contact", href: "/contact" }]} />
       <PageHero
         eyebrow="Contact"
         title="Give us a call or send a message"

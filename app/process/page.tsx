@@ -5,14 +5,22 @@ import { PageHero } from "@/components/layout/PageHero";
 import { FinalCtaBand } from "@/components/layout/FinalCtaBand";
 import { ProcessTimeline } from "@/components/process/ProcessTimeline";
 import { Button } from "@/components/ui/button";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Methodology",
+  ...buildOgMeta({
+    title: "Recruitment Process",
+    description:
+      "Step-by-step recruitment process from demand letter to deployment — shortlist, interview, medical, BMET, visa, orientation, ticketing, and arrival handover.",
+    path: "/process",
+  }),
 };
 
 export default function ProcessPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "Process", href: "/process" }]} />
       <PageHero
         eyebrow="How we work"
         title="Recruitment process — demand to deployment"

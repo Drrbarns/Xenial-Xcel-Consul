@@ -7,6 +7,8 @@ import { Section } from "@/components/layout/Section";
 import { PageHero } from "@/components/layout/PageHero";
 import { FinalCtaBand } from "@/components/layout/FinalCtaBand";
 import { Button } from "@/components/ui/button";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export function generateStaticParams() {
   return concerns.map((concern) => ({ slug: concern.slug }));
@@ -22,8 +24,11 @@ export async function generateMetadata({
   if (!concern) return { title: "Our concerns" };
 
   return {
-    title: `${concern.name} | Our concerns`,
-    description: concern.description,
+    ...buildOgMeta({
+      title: `${concern.name} | Our Concerns`,
+      description: concern.description,
+      path: `/concerns/${concern.slug}`,
+    }),
   };
 }
 
@@ -41,6 +46,7 @@ export default async function ConcernDetailPage({
 
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "Our Concerns", href: "/concerns" }, { name: concern.name, href: `/concerns/${concern.slug}` }]} />
       <PageHero
         eyebrow="Our concerns"
         title={concern.name}

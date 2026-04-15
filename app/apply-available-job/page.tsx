@@ -3,16 +3,22 @@ import { PageHero } from "@/components/layout/PageHero";
 import { Section } from "@/components/layout/Section";
 import { FinalCtaBand } from "@/components/layout/FinalCtaBand";
 import { ApplicationWizard } from "./ApplicationWizard";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Apply Available Job",
-  description:
-    "Xenial Xcel Consult Oil & Gas Employment Application Questionnaire for Australia sponsorship.",
+  ...buildOgMeta({
+    title: "Apply Available Job",
+    description:
+      "Apply for Oil & Gas employment opportunities in Australia through Xenial Xcel Consult. Employer sponsorship available with structured repayment terms.",
+    path: "/apply-available-job",
+  }),
 };
 
 export default function ApplyAvailableJobPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "Apply Available Job", href: "/apply-available-job" }]} />
       <PageHero
         eyebrow="Apply Available Job"
         title="Oil & Gas Employment Application"

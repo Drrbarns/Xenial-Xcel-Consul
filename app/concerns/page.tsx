@@ -6,11 +6,16 @@ import { Section } from "@/components/layout/Section";
 import { PageHero } from "@/components/layout/PageHero";
 import { FinalCtaBand } from "@/components/layout/FinalCtaBand";
 import { Button } from "@/components/ui/button";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Our Concerns",
-  description:
-    "Supportive concerns that make Xenium Xcel Consult a one-stop partner—travel and ticketing, training, 24/7 digital customer care, and legal compliance under RL-1221.",
+  ...buildOgMeta({
+    title: "Our Concerns",
+    description:
+      "Supportive concerns that make Xenial Xcel Consult a one-stop partner — travel and ticketing, training center, 24/7 digital customer care, and legal compliance under RL-1221.",
+    path: "/concerns",
+  }),
 };
 
 const concernSteps = [
@@ -35,6 +40,7 @@ const concernSteps = [
 export default function ConcernsPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "Our Concerns", href: "/concerns" }]} />
       <PageHero
         eyebrow="Our concerns"
         title="One-stop support around recruitment"

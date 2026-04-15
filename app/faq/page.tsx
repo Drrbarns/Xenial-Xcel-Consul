@@ -2,14 +2,24 @@ import { Metadata } from "next";
 import { FAQ } from "@/components/home/FAQ";
 import { PageHero } from "@/components/layout/PageHero";
 import { FinalCtaBand } from "@/components/layout/FinalCtaBand";
+import { buildOgMeta } from "@/lib/seo";
+import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo/JsonLd";
+import { faqs } from "@/lib/mockData";
 
 export const metadata: Metadata = {
-  title: "FAQ",
+  ...buildOgMeta({
+    title: "FAQ",
+    description:
+      "Frequently asked questions about Bangladeshi manpower recruitment, overseas employment process, RL-1221 licensing, and digital work capability.",
+    path: "/faq",
+  }),
 };
 
 export default function FAQPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "FAQ", href: "/faq" }]} />
+      <FAQPageJsonLd faqs={faqs} />
       <PageHero
         eyebrow="FAQ"
         title="Frequently Asked Questions"
