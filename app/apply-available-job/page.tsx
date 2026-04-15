@@ -17,6 +17,7 @@ export default function ApplyAvailableJobPage() {
         eyebrow="Apply Available Job"
         title="Oil & Gas Employment Application"
         description="Complete this step-by-step questionnaire carefully. Selected applicants may receive employer sponsorship for relocation to Australia."
+        bgImage="/images/hero_workspace_1776009199492.png"
       />
 
       <Section>
