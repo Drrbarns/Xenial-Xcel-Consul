@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 218 31% 23%;
+    --card: 0 0% 100%;
+    --card-foreground: 218 31% 23%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 218 31% 23%;
+    --primary: 223 73% 12%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 39 47% 57%;
+    --accent-foreground: 223 73% 12%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 223 73% 12%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight;
+  }
+}
+
+@layer utilities {
+  .section-padding {
+    @apply py-14 md:py-20 lg:py-24;
+  }
+
+  .premium-border {
+    @apply border border-primary/10 bg-white shadow-premium transition-all duration-300;
+  }
+  
+  .premium-hover {
+    @apply hover:-translate-y-1 hover:shadow-[0_20px_40px_-24px_rgba(8,24,51,0.5)];
+  }
+
+  .bg-dot-pattern {
+    background-image: radial-gradient(rgba(8, 24, 51, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
