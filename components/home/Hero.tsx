@@ -40,7 +40,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-8"
+            className="space-y-6 text-center lg:text-left"
           >
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
@@ -52,38 +52,37 @@ export function Hero() {
               </Badge>
             </motion.div>
             
-            <h1 className="font-[var(--font-heading)] text-5xl font-bold leading-tight tracking-tight text-white md:text-6xl lg:text-7xl">
+            <h1 className="font-[var(--font-heading)] text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
               Recruitment<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-white">Excellence</span>
             </h1>
             
-            <p className="max-w-xl text-lg leading-relaxed text-slate-300 md:text-xl">
-              {company.positioning} Licensed RL-1221, MOEWOE consented, BAIRA member—one accountable partner from
-              selection to deployment.
+            <p className="mx-auto max-w-md text-base leading-relaxed text-slate-300 sm:text-lg md:text-xl lg:mx-0 lg:max-w-xl">
+              Licensed RL-1221, MOEWOE consented, BAIRA member — your accountable partner from selection to deployment.
             </p>
             
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }} 
               transition={{ delay: 0.4 }}
-              className="flex flex-wrap items-center gap-4 pt-2"
+              className="flex flex-wrap items-center justify-center gap-3 pt-2 sm:gap-4 lg:justify-start"
             >
-              <Button asChild size="lg" className="h-14 rounded-full bg-accent px-8 text-base font-semibold text-primary shadow-[0_0_40px_-5px_rgba(234,179,8,0.4)] hover:bg-accent/90 transition-all hover:scale-105">
+              <Button asChild size="lg" className="h-12 rounded-full bg-accent px-6 text-sm font-semibold text-primary shadow-[0_0_40px_-5px_rgba(234,179,8,0.4)] hover:bg-accent/90 transition-all hover:scale-105 sm:h-14 sm:px-8 sm:text-base">
                 <Link href="/contact">
                   Contact us
-                  <ArrowUpRight className="ml-2 h-5 w-5" />
+                  <ArrowUpRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="h-14 rounded-full border-slate-600 bg-white/5 px-8 text-base font-medium text-white backdrop-blur-md transition-all hover:bg-white/10">
+              <Button asChild variant="outline" size="lg" className="h-12 rounded-full border-slate-600 bg-white/5 px-6 text-sm font-medium text-white backdrop-blur-md transition-all hover:bg-white/10 sm:h-14 sm:px-8 sm:text-base">
                 <Link href="/request">
                   Request manpower
                 </Link>
               </Button>
             </motion.div>
             
-            <div className="flex flex-wrap gap-4 pt-6 opacity-80">
-              {company.trustBadges.map((item, idx) => (
-                <div key={item} className="flex items-center gap-2 text-sm text-slate-400">
+            <div className="flex flex-wrap justify-center gap-3 pt-4 opacity-80 sm:gap-4 sm:pt-6 lg:justify-start">
+              {company.trustBadges.map((item) => (
+                <div key={item} className="flex items-center gap-1.5 text-xs text-slate-400 sm:gap-2 sm:text-sm">
                   <BadgeCheckIcon />
                   {item}
                 </div>
