@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { concerns } from "@/lib/mockData";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://xenialxcelconsult.com";
+import { SITE_URL } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [

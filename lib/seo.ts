@@ -1,4 +1,7 @@
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://xenialxcelconsult.com";
+/** Production canonical origin (www). Override with NEXT_PUBLIC_SITE_URL in env if needed. */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.xeniumxcel.com"
+).replace(/\/$/, "");
 
 export const SITE_NAME = "Xenial Xcel Consult";
 
