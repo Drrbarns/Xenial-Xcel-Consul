@@ -25,17 +25,41 @@ export const company = {
 
 export const navLinks = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
+  { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
-  { label: "Visa Processing", href: "/services/visa-processing" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Our Concerns", href: "/concerns" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];
 
+/** Items shown in the Services dropdown on desktop and listed under Services on mobile */
+export const servicesMenu = [
+  {
+    label: "All services",
+    href: "/services",
+    description: "Recruitment, training, ticketing & visa — full portfolio",
+  },
+  {
+    label: "Visa Processing",
+    href: "/services/visa-processing",
+    description: "End-to-end overseas visa coordination",
+  },
+  {
+    label: "Recruitment Process",
+    href: "/process",
+    description: "Demand letter → deployment pipeline",
+  },
+  {
+    label: "Our Concerns",
+    href: "/concerns",
+    description: "Travel, training, digital care & compliance",
+  },
+];
+
 export const footerExtraLinks = [
   { label: "Visa processing", href: "/services/visa-processing" },
+  { label: "Our Concerns", href: "/concerns" },
+  { label: "Process", href: "/process" },
   { label: "Request manpower", href: "/request" },
   { label: "Apply available job", href: "/apply-available-job" },
 ];

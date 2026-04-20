@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { company, footerExtraLinks, navLinks } from "@/lib/mockData";
+import { SITE_LOGO_PATH } from "@/lib/seo";
 import { Container } from "./Container";
 
 export function Footer() {
@@ -8,9 +10,18 @@ export function Footer() {
     <footer className="border-t border-border bg-[#081833] text-slate-100">
       <Container className="grid gap-10 py-14 md:grid-cols-3">
         <div className="space-y-4">
-          <h3 className="font-[var(--font-heading)] text-2xl font-bold tracking-tight text-white mb-2">
-            {company.name}
-          </h3>
+          <Link
+            href="/"
+            className="inline-block outline-none ring-offset-[#081833] transition-opacity hover:opacity-90 focus-visible:rounded-md focus-visible:ring-2 focus-visible:ring-[#C8A45D]"
+          >
+            <Image
+              src={SITE_LOGO_PATH}
+              alt={`${company.name} — ${company.tagline}`}
+              width={612}
+              height={479}
+              className="h-12 w-auto md:h-14 brightness-110"
+            />
+          </Link>
           <p className="text-sm text-slate-300 max-w-sm leading-relaxed">{company.positioning}</p>
           <p className="text-xs uppercase tracking-widest text-[#C8A45D] font-semibold mt-4">
             Independent · Registered · Ghana-based
