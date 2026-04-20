@@ -35,7 +35,8 @@ function formatBytes(bytes: number) {
 
 export function ContactForm() {
   const [topic, setTopic] = useState("");
-  const [status, setStatus] = useState<"idle" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -63,32 +64,45 @@ export function ContactForm() {
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+    if (!topic) {
+      setErrorMessage("Please select a topic.");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("sending");
+    setErrorMessage(null);
+
     const fd = new FormData(form);
-    const name = String(fd.get("name") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim();
-    const org = String(fd.get("organization") ?? "").trim();
-    const phone = String(fd.get("phone") ?? "").trim();
-    const message = String(fd.get("message") ?? "").trim();
+    fd.set("topic", topic);
 
-    if (!name || !email || !topic || !message) return;
+    try {
+      const res = await fetch("/api/contact", { method: "POST", body: fd });
+      const data = (await res.json()) as { success?: boolean; message?: string };
 
-    const topicLabel = topics.find((t) => t.value === topic)?.label ?? topic;
-    const subject = encodeURIComponent(`[${topicLabel}] Inquiry from ${name}`);
-    const attachmentLine = file
-      ? `\nAttachment ready: ${file.name} (${formatBytes(file.size)}) — please attach manually in your mail client before sending.\n`
-      : "";
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nOrganization: ${org || "—"}\nPhone: ${phone || "—"}\nTopic: ${topicLabel}\n${attachmentLine}\nMessage:\n${message}\n`,
-    );
-    window.location.href = `mailto:${company.email}?subject=${subject}&body=${body}`;
-    setStatus("sent");
+      if (!res.ok || !data.success) {
+        setErrorMessage(data.message || "Something went wrong. Please try again.");
+        setStatus("error");
+        return;
+      }
+
+      setStatus("success");
+      form.reset();
+      setTopic("");
+      clearFile();
+    } catch {
+      setErrorMessage("Network error. Please check your connection and try again.");
+      setStatus("error");
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      <input type="hidden" name="topic" value={topic} readOnly aria-hidden />
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="contact-name">Full name</Label>
@@ -183,7 +197,7 @@ export function ContactForm() {
           )}
         </div>
         <p className="text-xs text-slate-500">
-          PDF, DOC, image, or zip. Max 15 MB. Your mail client will handle the actual upload after the message opens.
+          PDF, DOC, image, or zip. Max 15 MB. Files are sent securely with your message via email.
         </p>
         {fileError && (
           <p className="text-xs font-medium text-red-600" role="alert">
@@ -193,15 +207,26 @@ export function ContactForm() {
       </div>
 
       <p className="text-xs leading-relaxed text-slate-500">
-        Submitting opens your email app with a pre-filled message to {company.email}. Attach the file from your mail
-        client when prompted.
+        Your inquiry is delivered to {company.email} by email (Resend). We usually reply within one business day.
       </p>
-      <Button type="submit" size="lg" className="w-full rounded-full shadow-premium sm:w-auto sm:px-10" variant="gold">
-        Send inquiry
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full rounded-full shadow-premium sm:w-auto sm:px-10"
+        variant="gold"
+        disabled={status === "sending"}
+      >
+        {status === "sending" ? "Sending…" : "Send inquiry"}
       </Button>
-      {status === "sent" && (
-        <p className="text-sm font-medium text-primary" role="status">
-          If your mail client did not open, email us directly at {company.email}.
+
+      {status === "success" && (
+        <p className="text-sm font-medium text-green-700" role="status">
+          Thank you — your message was sent. We will get back to you soon.
+        </p>
+      )}
+      {status === "error" && errorMessage && (
+        <p className="text-sm font-medium text-red-600" role="alert">
+          {errorMessage}
         </p>
       )}
     </form>

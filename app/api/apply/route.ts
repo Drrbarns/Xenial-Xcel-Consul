@@ -1,11 +1,5 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
-
-function getResend() {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) throw new Error("RESEND_API_KEY is not set");
-  return new Resend(key);
-}
+import { getResend, getResendFrom } from "@/lib/resend";
 
 const TO_EMAIL = process.env.APPLICATION_EMAIL || "info@xeniumxcel.com";
 
@@ -92,7 +86,7 @@ export async function POST(request: Request) {
     const resend = getResend();
 
     const { error } = await resend.emails.send({
-      from: "Xenium Xcel Consult <onboarding@resend.dev>",
+      from: getResendFrom(),
       to: [TO_EMAIL],
       replyTo: applicantEmail || undefined,
       subject: `New Application: ${applicantName} — Oil & Gas (Australia)`,
