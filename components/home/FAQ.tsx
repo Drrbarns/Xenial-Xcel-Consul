@@ -45,8 +45,8 @@ export function FAQ({ limit }: FAQProps) {
                 Client queries on manpower recruiting
               </h2>
               <p className="mt-4 max-w-md text-base leading-relaxed text-slate-600">
-                An index of common questions and answers about overseas employment, Bangladeshi workers, and how{" "}
-                {company.name} operates under RL-1221.
+                An index of common questions and answers about overseas employment, recruitment, visa processing, and how{" "}
+                {company.name} operates from Ghana.
               </p>
               <ul className="mt-8 space-y-4 text-sm text-slate-700">
                 <li className="flex gap-3">
@@ -67,7 +67,7 @@ export function FAQ({ limit }: FAQProps) {
                   <span>
                     <span className="font-semibold text-primary">Compliance</span>
                     <span className="mt-0.5 block text-slate-600">
-                      MOEWOE, BAIRA, contracts, and how workers move legally through BMET channels.
+                      Registration, regulation, contracts, and how workers move through legal recruitment and visa channels.
                     </span>
                   </span>
                 </li>
@@ -93,7 +93,7 @@ export function FAQ({ limit }: FAQProps) {
                 Frequently asked questions (FAQ)
               </h2>
               <p className="mt-3 max-w-2xl text-slate-600">
-                Questions and answers about manpower recruiting, Bangladeshi workers, and {company.name} RL-1221.
+                Questions and answers about manpower recruiting, visa processing, and how {company.name} operates from Ghana.
               </p>
             </>
           )}

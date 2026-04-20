@@ -34,8 +34,8 @@ export function HomeCta() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-white">or visit our office</span>
             </h2>
             <p className="text-xl text-slate-300 max-w-2xl leading-relaxed">
-              Give us a call or drop by anytime—we endeavour to answer all inquiries within 24 hours on business days.
-              Our office is open Saturday to Thursday, 10am–6pm.
+              Send us a message or schedule a call—we endeavour to answer all inquiries within one business day.
+              Office hours: Monday to Friday, 9am–6pm GMT.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
               <Button asChild variant="gold" size="lg" className="h-14 px-8 rounded-full shadow-[0_0_40px_-5px_rgba(234,179,8,0.4)]">

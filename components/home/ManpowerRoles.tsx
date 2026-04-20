@@ -19,9 +19,9 @@ export function ManpowerRoles() {
           Are you looking for manpower?
         </h2>
         <p className="mt-4 text-lg leading-relaxed text-slate-600">
-          {company.name} is one of the best government-approved recruiting agencies in Bangladesh. Our motto is to
-          supply the right people, with the right skills, at the right time and place—from trades on site to support
-          roles across industries.
+          {company.name} is an independent, registered recruitment and travel agency in Ghana. Our motto is to supply
+          the right people, with the right skills, at the right time and place — from trades on site to support roles
+          across industries.
         </p>
       </div>
 

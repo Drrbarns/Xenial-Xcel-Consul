@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
-import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Clock, Mail, MessageCircle, Phone, MapPin } from "lucide-react";
 import { company } from "@/lib/mockData";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { Section } from "@/components/layout/Section";
@@ -14,7 +14,7 @@ import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 export const metadata: Metadata = {
   ...buildOgMeta({
     title: "Contact",
-    description: `Reach ${company.name} for manpower inquiries, demand letters, and deployment support. Dhaka office: +88 01711-565979. Digital updates and 24/7 customer care.`,
+    description: `Reach ${company.name} for recruitment inquiries, visa processing, and Australia sponsorship support. Email ${company.email} — based in Accra, Ghana.`,
     path: "/contact",
   }),
 };
@@ -25,8 +25,8 @@ export default function ContactPage() {
       <BreadcrumbJsonLd items={[{ name: "Home", href: "/" }, { name: "Contact", href: "/contact" }]} />
       <PageHero
         eyebrow="Contact"
-        title="Give us a call or send a message"
-        description={`We endeavour to answer all inquiries within 24 hours on business days. ${company.name} serves employers and principals with RL-1221 compliance and transparent timelines.`}
+        title="Talk to our team"
+        description={`We endeavour to answer all inquiries within one business day. ${company.name} serves overseas employers and candidates from Ghana with transparent timelines.`}
         bgImage="/images/hero_workspace_1776009199492.png"
       />
 
@@ -37,11 +37,11 @@ export default function ContactPage() {
               <CardContent className="p-6 md:p-10">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent">Inquiry</p>
                 <h2 className="mt-3 font-[var(--font-heading)] text-2xl font-bold text-primary md:text-3xl">
-                  Request a call back
+                  Send us a message
                 </h2>
                 <p className="mt-3 text-slate-600 md:text-lg">
-                  Share your name, phone number, and a short note about vacancies or deployment needs. Full name and
-                  contact details help us respond faster.
+                  Share your name, email, and a short note about your role, vacancies, or visa processing question.
+                  Attach a file if it helps us understand the context faster.
                 </p>
                 <div className="mt-8 border-t border-slate-100 pt-8">
                   <ContactForm />
@@ -59,6 +59,24 @@ export default function ContactPage() {
                 <ul className="space-y-4">
                   <li>
                     <a
+                      href={`mailto:${company.email}`}
+                      className="group flex gap-4 rounded-xl border border-transparent p-2 transition-colors hover:border-primary/10 hover:bg-slate-50"
+                    >
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-accent">
+                        <Mail className="h-5 w-5" aria-hidden />
+                      </span>
+                      <span>
+                        <span className="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                          Email (preferred)
+                        </span>
+                        <span className="break-all font-semibold text-primary group-hover:underline">
+                          {company.email}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
                       href={`tel:${company.phoneLinks[0]}`}
                       className="group flex gap-4 rounded-xl border border-transparent p-2 transition-colors hover:border-primary/10 hover:bg-slate-50"
                     >
@@ -67,41 +85,9 @@ export default function ContactPage() {
                       </span>
                       <span>
                         <span className="block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                          Primary
+                          Phone
                         </span>
                         <span className="font-semibold text-primary group-hover:underline">{company.phones[0]}</span>
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={`tel:${company.phoneLinks[1]}`}
-                      className="group flex gap-4 rounded-xl border border-transparent p-2 transition-colors hover:border-primary/10 hover:bg-slate-50"
-                    >
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-accent">
-                        <Phone className="h-5 w-5" aria-hidden />
-                      </span>
-                      <span>
-                        <span className="block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                          Alternate
-                        </span>
-                        <span className="font-semibold text-primary group-hover:underline">{company.phones[1]}</span>
-                      </span>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href={`mailto:${company.email}`}
-                      className="group flex gap-4 rounded-xl border border-transparent p-2 transition-colors hover:border-primary/10 hover:bg-slate-50"
-                    >
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-accent">
-                        <Mail className="h-5 w-5" aria-hidden />
-                      </span>
-                      <span>
-                        <span className="block text-xs font-semibold uppercase tracking-wide text-slate-500">Email</span>
-                        <span className="break-all font-semibold text-primary group-hover:underline">
-                          {company.email}
-                        </span>
                       </span>
                     </a>
                   </li>
@@ -111,17 +97,12 @@ export default function ContactPage() {
                     </span>
                     <div>
                       <span className="block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                        Headquarters
+                        Based in
                       </span>
                       <p className="mt-1 text-sm font-medium leading-relaxed text-slate-800">{company.address}</p>
-                      <a
-                        href={company.mapUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-2 inline-flex text-sm font-semibold text-primary hover:text-accent hover:underline"
-                      >
-                        Open in Google Maps
-                      </a>
+                      <p className="mt-1 text-xs text-slate-500">
+                        Office walk-ins by appointment only — please email or message ahead.
+                      </p>
                     </div>
                   </li>
                 </ul>
@@ -136,8 +117,8 @@ export default function ContactPage() {
                 <div>
                   <h4 className="font-[var(--font-heading)] font-semibold text-primary">Office hours</h4>
                   <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                    Saturday to Thursday, 10:00 AM – 6:00 PM (Dhaka). Messages outside hours are queued for the next
-                    business day.
+                    Monday to Friday, 9:00 AM – 6:00 PM (GMT). Messages outside hours are queued for the next business
+                    day.
                   </p>
                 </div>
               </CardContent>
@@ -178,51 +159,22 @@ export default function ContactPage() {
       </Section>
 
       <Section className="bg-white">
-        <div className="space-y-4">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent">Location</p>
-              <h2 className="mt-2 font-[var(--font-heading)] text-2xl font-bold text-primary md:text-3xl">
-                Dhaka office
-              </h2>
-              <p className="mt-2 max-w-2xl text-slate-600">
-                Visit during office hours or call ahead. We are located at Palladium Market, 2nd Floor, Dhaka 1212.
-              </p>
-            </div>
-            <Button asChild variant="outline" className="rounded-full border-primary/20">
-              <a href={company.mapUrl} target="_blank" rel="noreferrer">
-                Larger map
-              </a>
-            </Button>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/60">
-            <iframe
-              title={`${company.name} — Dhaka office map`}
-              src={company.mapEmbedSrc}
-              className="h-[min(420px,50vh)] w-full border-0 md:h-[440px]"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-          </div>
-        </div>
-
-        <div className="mt-12 flex flex-wrap gap-4 border-t border-slate-100 pt-10">
+        <div className="flex flex-wrap gap-4">
           <Button asChild className="rounded-full shadow-premium" size="lg">
             <Link href="/request">Request manpower</Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="rounded-full border-primary/20">
-            <Link href="/faq">Read FAQ</Link>
+            <Link href="/services/visa-processing">Visa processing</Link>
           </Button>
           <Button asChild variant="ghost" size="lg" className="rounded-full text-primary">
-            <Link href="/process">Our methodology</Link>
+            <Link href="/faq">Read FAQ</Link>
           </Button>
         </div>
       </Section>
 
       <FinalCtaBand
-        title="Have a demand letter ready?"
-        description="Send quantities, roles, salary bands, and timeline—we will confirm feasibility and next steps under RL-1221 compliance."
+        title="Have a hiring requirement ready?"
+        description="Send roles, quantities, salary bands, and timeline — we will confirm feasibility and next steps."
       />
     </>
   );

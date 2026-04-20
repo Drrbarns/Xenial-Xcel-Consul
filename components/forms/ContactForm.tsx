@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { Paperclip, X } from "lucide-react";
 import { company } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,16 +17,51 @@ import {
 
 const topics = [
   { value: "manpower", label: "Manpower / vacancy" },
-  { value: "demand", label: "Demand letter & compliance" },
+  { value: "visa", label: "Visa processing" },
+  { value: "sponsorship", label: "Australia sponsorship" },
   { value: "services", label: "Services & sectors" },
   { value: "ticketing", label: "Travel / ticketing" },
-  { value: "training", label: "Training center" },
+  { value: "training", label: "Training preparation" },
   { value: "other", label: "Other" },
 ];
+
+const MAX_FILE_BYTES = 15 * 1024 * 1024;
+
+function formatBytes(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
 
 export function ContactForm() {
   const [topic, setTopic] = useState("");
   const [status, setStatus] = useState<"idle" | "sent">("idle");
+  const [file, setFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] ?? null;
+    if (!f) {
+      setFile(null);
+      setFileError(null);
+      return;
+    }
+    if (f.size > MAX_FILE_BYTES) {
+      setFile(null);
+      setFileError("Attachment is larger than 15 MB. Please share via cloud link in the message.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+    setFileError(null);
+    setFile(f);
+  }
+
+  function clearFile() {
+    setFile(null);
+    setFileError(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,8 +77,11 @@ export function ContactForm() {
 
     const topicLabel = topics.find((t) => t.value === topic)?.label ?? topic;
     const subject = encodeURIComponent(`[${topicLabel}] Inquiry from ${name}`);
+    const attachmentLine = file
+      ? `\nAttachment ready: ${file.name} (${formatBytes(file.size)}) — please attach manually in your mail client before sending.\n`
+      : "";
     const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nOrganization: ${org || "—"}\nPhone: ${phone || "—"}\nTopic: ${topicLabel}\n\nMessage:\n${message}\n`,
+      `Name: ${name}\nEmail: ${email}\nOrganization: ${org || "—"}\nPhone: ${phone || "—"}\nTopic: ${topicLabel}\n${attachmentLine}\nMessage:\n${message}\n`,
     );
     window.location.href = `mailto:${company.email}?subject=${subject}&body=${body}`;
     setStatus("sent");
@@ -74,7 +113,7 @@ export function ContactForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="contact-phone">Phone (optional)</Label>
-          <Input id="contact-phone" name="phone" type="tel" autoComplete="tel" placeholder="+1 …" />
+          <Input id="contact-phone" name="phone" type="tel" autoComplete="tel" placeholder="+233 …" />
         </div>
       </div>
       <div className="space-y-2">
@@ -103,12 +142,59 @@ export function ContactForm() {
           className="min-h-[140px] resize-y"
         />
       </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="contact-attachment">Attachment (optional)</Label>
+        <div className="flex flex-wrap items-center gap-3">
+          <input
+            ref={fileInputRef}
+            id="contact-attachment"
+            name="attachment"
+            type="file"
+            onChange={handleFileChange}
+            className="hidden"
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.png,.jpg,.jpeg,.webp,.zip"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-full border-primary/20 px-5"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <Paperclip className="mr-2 h-4 w-4" />
+            {file ? "Replace file" : "Attach a file"}
+          </Button>
+          {file && (
+            <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-700">
+              <span className="max-w-[180px] truncate" title={file.name}>
+                {file.name}
+              </span>
+              <span className="text-slate-400">·</span>
+              <span className="tabular-nums text-slate-500">{formatBytes(file.size)}</span>
+              <button
+                type="button"
+                onClick={clearFile}
+                className="rounded-full p-0.5 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-700"
+                aria-label="Remove attachment"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </span>
+          )}
+        </div>
+        <p className="text-xs text-slate-500">
+          PDF, DOC, image, or zip. Max 15 MB. Your mail client will handle the actual upload after the message opens.
+        </p>
+        {fileError && (
+          <p className="text-xs font-medium text-red-600" role="alert">
+            {fileError}
+          </p>
+        )}
+      </div>
+
       <p className="text-xs leading-relaxed text-slate-500">
-        Submitting opens your email app with a pre-filled message to {company.email}. Prefer not to use mail? Call{" "}
-        <a href={`tel:${company.phoneLinks[0]}`} className="font-medium text-primary hover:underline">
-          {company.phones[0]}
-        </a>
-        .
+        Submitting opens your email app with a pre-filled message to {company.email}. Attach the file from your mail
+        client when prompted.
       </p>
       <Button type="submit" size="lg" className="w-full rounded-full shadow-premium sm:w-auto sm:px-10" variant="gold">
         Send inquiry

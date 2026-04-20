@@ -6,27 +6,26 @@ export const SITE_URL = (
 export const SITE_NAME = "Xenial Xcel Consult";
 
 export const SITE_DESCRIPTION =
-  "Xenial Xcel Consult (RL-1221) is a trusted international employer-oriented manpower recruitment agency in Bangladesh — MOEWOE consented, BAIRA member — delivering skilled and unskilled workers for employers worldwide.";
+  "Xenium Xcel Consult is a Ghana-based recruitment and travel agency connecting qualified candidates with overseas employers across oil & gas, construction, hospitality, and engineering — independent, registered, and regulated for over five years.";
 
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export const KEYWORDS = [
-  "manpower recruitment agency Bangladesh",
+  "recruitment agency Ghana",
+  "Xenium Xcel Consult",
   "Xenial Xcel Consult",
-  "RL-1221",
-  "BAIRA member recruitment",
-  "MOEWOE consented agency",
-  "overseas employment Bangladesh",
-  "skilled workers recruitment",
-  "international manpower supply",
-  "oil and gas recruitment",
+  "travel and recruitment agency Accra",
+  "overseas employment Ghana",
   "Australia sponsorship jobs",
-  "construction workers Bangladesh",
-  "manufacturing workers recruitment",
-  "recruitment agency Dhaka",
+  "oil and gas recruitment Ghana",
+  "visa processing Ghana",
+  "international manpower supply",
+  "skilled workers recruitment",
+  "construction workers Ghana",
+  "hospitality workers recruitment",
+  "engineering jobs abroad",
   "employer-oriented recruitment",
   "workforce deployment",
-  "demand letter processing",
   "overseas job placement",
 ];
 

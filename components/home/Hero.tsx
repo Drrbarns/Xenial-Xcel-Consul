@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, Globe2, MoveRight, Users, FileCheck2 } from "lucide-react";
+import { ArrowUpRight, Globe2, MoveRight, Users, ShieldCheck } from "lucide-react";
 import { company } from "@/lib/mockData";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -58,7 +58,7 @@ export function Hero() {
             </h1>
             
             <p className="mx-auto max-w-md text-base leading-relaxed text-slate-300 sm:text-lg md:text-xl lg:mx-0 lg:max-w-xl">
-              Licensed RL-1221, MOEWOE consented, BAIRA member — your accountable partner from selection to deployment.
+              Ghana-based recruitment & travel agency — registered, regulated, and accountable from selection to deployment.
             </p>
             
             <motion.div 
@@ -104,11 +104,11 @@ export function Hero() {
                   
                   <div className="flex items-start gap-4">
                     <div className="flex shrink-0 items-center justify-center rounded-lg bg-accent/20 p-3 text-accent">
-                      <FileCheck2 className="h-6 w-6" />
+                      <ShieldCheck className="h-6 w-6" />
                     </div>
                     <div>
-                      <p className="font-semibold text-white">Government-approved file path</p>
-                      <p className="text-sm text-slate-300">RL-1221 recruiting license with MOEWOE consent and BAIRA alignment on every deployment.</p>
+                      <p className="font-semibold text-white">Five years of trusted operations</p>
+                      <p className="text-sm text-slate-300">Independent recruitment & travel agency, registered and regulated for over 5 years from our Ghana base.</p>
                     </div>
                   </div>
 

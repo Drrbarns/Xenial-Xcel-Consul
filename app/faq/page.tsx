@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   ...buildOgMeta({
     title: "FAQ",
     description:
-      "Frequently asked questions about Bangladeshi manpower recruitment, overseas employment process, RL-1221 licensing, and digital work capability.",
+      "Frequently asked questions about overseas recruitment, visa processing, Australia sponsorship, sectors served, and how Xenium Xcel Consult operates from Ghana.",
     path: "/faq",
   }),
 };

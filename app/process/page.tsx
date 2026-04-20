@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   ...buildOgMeta({
     title: "Recruitment Process",
     description:
-      "Step-by-step recruitment process from demand letter to deployment — shortlist, interview, medical, BMET, visa, orientation, ticketing, and arrival handover.",
+      "Step-by-step recruitment process from demand letter to deployment — shortlist, interview, medical, documentation, visa, orientation, ticketing, and arrival handover.",
     path: "/process",
   }),
 };
@@ -24,7 +24,7 @@ export default function ProcessPage() {
       <PageHero
         eyebrow="How we work"
         title="Recruitment process — demand to deployment"
-        description="A disciplined sequence from demand letter through BMET, medicals, training, ticketing, and arrival—so employers get predictable batches and workers get legal, dignified movement."
+        description="A disciplined sequence from demand letter through documentation, medicals, training, visa processing, ticketing, and arrival—so employers get predictable batches and workers get legal, dignified movement."
         bgImage="/images/hero_workspace_1776009199492.png"
       />
       <Section className="py-24 bg-slate-50">

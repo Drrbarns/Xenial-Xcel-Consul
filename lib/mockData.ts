@@ -1,23 +1,24 @@
 export const company = {
   name: "Xenium Xcel Consult",
   tagline: "Recruitment Excellence",
-  email: "info@gulfint-bd.com",
-  phones: ["+88 01711-565979", "+88 01971-565979"],
-  phoneLinks: ["8801711565979", "8801971565979"],
-  whatsapp: "8801711565979",
-  address: "House No: 01, Road No: 95, Palladium Market, 2nd Floor, Dhaka 1212, Bangladesh",
-  mapUrl: "https://www.google.com/maps/search/?api=1&query=House+1+Road+95+Palladium+Market+Dhaka+1212",
-  mapEmbedSrc:
-    "https://www.google.com/maps?q=Palladium+Market+Dhaka+1212&z=16&output=embed",
-  destinationCountries: ["Middle East", "Europe", "Asia", "Africa"],
+  email: "info@xeniumxcel.com",
+  /** Display-friendly phone numbers (placeholder Ghana format — replace with actual lines) */
+  phones: ["+233 20 000 0000", "+233 24 000 0000"],
+  /** tel: link normalized digits */
+  phoneLinks: ["233200000000", "233240000000"],
+  whatsapp: "233200000000",
+  /** Country / city only — physical office address is intentionally omitted until confirmed */
+  address: "Accra, Ghana",
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=Accra+Ghana",
+  destinationCountries: ["Australia", "Middle East", "Europe", "Asia"],
   positioning:
-    "Xenium Xcel Consult is one of the most trusted independent international employer-oriented manpower recruitment agencies in Bangladesh.",
+    "Xenium Xcel Consult is a Ghana-based recruitment and travel agency that connects qualified candidates with overseas employers — independent, registered, and regulated for over five years.",
   topBarLine:
-    "Government-approved RL-1221 · MOEWOE Bangladesh · BAIRA member · Digital updates & 24/7 support",
+    "Independent recruitment & travel agency · Ghana · Registered & regulated · Digital updates & 24/7 support",
   trustBadges: [
-    "Recruiting license RL-1221",
-    "MOEWOE authorized",
-    "BAIRA member",
+    "Registered & regulated for 5+ years",
+    "Independent recruitment & travel agency",
+    "Ghana-based, globally connected",
     "Digital customer care",
   ],
 };
@@ -26,6 +27,7 @@ export const navLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
+  { label: "Visa Processing", href: "/services/visa-processing" },
   { label: "Gallery", href: "/gallery" },
   { label: "Our Concerns", href: "/concerns" },
   { label: "FAQ", href: "/faq" },
@@ -33,7 +35,7 @@ export const navLinks = [
 ];
 
 export const footerExtraLinks = [
-  { label: "Our Certifications", href: "/about" },
+  { label: "Visa processing", href: "/services/visa-processing" },
   { label: "Request manpower", href: "/request" },
   { label: "Apply available job", href: "/apply-available-job" },
 ];
@@ -52,7 +54,7 @@ export const commitmentTrio = [
   {
     title: "Strength",
     description:
-      "Bangladeshi workers are our strength and our pride—fully committed to helping you achieve your goals.",
+      "A vetted talent pool — our pride and our promise, fully committed to helping employers achieve their goals.",
   },
 ];
 
@@ -65,12 +67,12 @@ export const missionVisionPassion = [
   {
     title: "Our Vision",
     description:
-      "To be a significant part of the country’s development by exporting manpower abroad, earning foreign remittance, and ensuring a secure life for all stakeholders.",
+      "To be a significant part of overseas opportunity creation — connecting qualified talent to employers and ensuring a secure life for all stakeholders.",
   },
   {
     title: "Our Passion",
     description:
-      "Our core values are achieved by choosing the best candidates for employers with the right commitment. We are sincere and dedicated in selection—the key to our success.",
+      "Our core values are achieved by choosing the best candidates for employers with the right commitment. We are sincere and dedicated in selection — the key to our success.",
   },
 ];
 
@@ -83,7 +85,7 @@ export const qualityServices: QualityServicePillar[] = [
   {
     title: "Reliable",
     description:
-      "Xenium Xcel Consult, RL-1221, is a trusted manpower recruiting agency in Bangladesh. Reliability is how we build lasting relationships with employers.",
+      "Xenium Xcel Consult is a trusted, independent recruitment and travel agency. Reliability is how we build lasting relationships with employers and candidates.",
   },
   {
     title: "Experienced",
@@ -103,7 +105,7 @@ export const qualityServices: QualityServicePillar[] = [
   {
     title: "Strong supportive concerns",
     description:
-      "Legal entities and support—recruiting license, government trade license, travel for air ticketing, training center, 24/7 digital customer care—for true one-stop service.",
+      "Travel and ticketing, training preparation, and 24/7 digital customer care — everything you need under one accountable team.",
   },
   {
     title: "Comprehensive coverage",
@@ -113,24 +115,29 @@ export const qualityServices: QualityServicePillar[] = [
 ];
 
 export const expertiseAreas = [
+  "Oil & Gas",
   "Manufacturing",
   "Service industries",
   "Construction",
-  "Plantation",
-  "Agriculture",
+  "Hospitality",
   "Engineering",
 ];
 
 export const expertiseCards = [
   {
+    title: "Oil & Gas",
+    description:
+      "Onshore and offshore roles aligned with international employer standards — engineering, drilling, welding, mechanical, and safety.",
+  },
+  {
     title: "Manufacturing",
     description:
-      "Electronics, cosmetics, hand gloves, and wider manufacturing demand—skilled and semi-skilled placements aligned to line requirements.",
+      "Electronics, cosmetics, hand gloves, and wider manufacturing demand — skilled and semi-skilled placements aligned to line requirements.",
   },
   {
     title: "Service industries",
     description:
-      "Super shops, malls, hotels, cleaning companies, and more—hospitality and service workforce tailored to your brand standards.",
+      "Super shops, malls, hotels, cleaning companies, and more — hospitality and service workforce tailored to your brand standards.",
   },
   {
     title: "Construction",
@@ -138,14 +145,9 @@ export const expertiseCards = [
       "Skilled and unskilled manpower for construction programmes across multiple destination countries.",
   },
   {
-    title: "Plantation",
+    title: "Hospitality",
     description:
-      "Diligent labour for plantation operations where discipline, safety, and output matter every season.",
-  },
-  {
-    title: "Agriculture",
-    description:
-      "Support for agricultural development programmes with dependable field and processing labour.",
+      "Restaurant, kitchen, housekeeping, and front-of-house staff prepared with safety, discipline, and service standards.",
   },
   {
     title: "Engineering",
@@ -165,21 +167,21 @@ export const manpowerRoleTags = [
   "Driver",
   "Cleaner",
   "General labour",
-  "Agriculture labour",
-  "Plantation worker",
   "Construction worker",
-  "Gardening",
   "Factory worker",
   "Restaurant worker",
   "Deliveryman",
   "Engineers",
+  "Welders",
+  "Drillers",
+  "Safety officers",
 ];
 
 export const pipelineSteps = [
   "Demand letter",
   "Shortlist & interview",
   "Medical & biometrics",
-  "BMET & documentation",
+  "Documentation & contracts",
   "Visa & permit",
   "Orientation & training",
   "Ticketing",
@@ -199,11 +201,11 @@ export const processSteps = [
   },
   {
     title: "Medical & biometrics",
-    description: "GAMCA / country-specific medicals, biometrics, and health clearance aligned to embassy windows.",
+    description: "Country-specific medicals, biometrics, and health clearance aligned to embassy windows.",
   },
   {
-    title: "BMET & documentation",
-    description: "BMET registration, employment contracts, insurance, and file completeness before submission.",
+    title: "Documentation & contracts",
+    description: "Employment contracts, insurance, and file completeness before submission to embassies and authorities.",
   },
   {
     title: "Visa & permit",
@@ -236,7 +238,7 @@ export const galleryCategories = [
   "Delivery teams",
   "Cleaners",
   "Construction",
-  "Agriculture",
+  "Hospitality",
   "Engineering",
 ];
 
@@ -263,8 +265,8 @@ export const galleryPortfolio = [
     image: "/images/gallery_construction_workers_1776281601457.png",
   },
   {
-    title: "Agriculture workers",
-    description: "Field and processing labour for seasonal and year-round agricultural programmes.",
+    title: "Hospitality teams",
+    description: "Front-of-house and back-of-house staff prepared for hotel and restaurant standards abroad.",
     image: "/images/gallery_agriculture_workers_1776281618937.png",
   },
   {
@@ -306,10 +308,10 @@ export const concerns: Concern[] = [
   },
   {
     slug: "training-center",
-    name: "Training center",
+    name: "Training preparation",
     description: "Orientation, safety, and role-specific preparation so workers arrive ready for your site standards.",
     overview:
-      "Training modules cover workplace discipline, basic safety, language essentials where required, and employer-specific briefings. Content can be adapted to manufacturing, construction, hospitality, or household service roles.",
+      "Training modules cover workplace discipline, basic safety, language essentials where required, and employer-specific briefings. Content can be adapted to oil & gas, manufacturing, construction, hospitality, or household service roles.",
     highlights: [
       "Employer-provided SOPs folded into practical drills where permitted",
       "Assessment checkpoints before final clearance to travel",
@@ -336,7 +338,7 @@ export const concerns: Concern[] = [
     ],
     outcomes: [
       "Faster resolution of documentation gaps",
-      "Employers see the same status workers see—reduced mistrust",
+      "Employers see the same status workers see — reduced mistrust",
       "Audit-friendly logs for high-volume programmes",
     ],
     idealFor:
@@ -345,13 +347,13 @@ export const concerns: Concern[] = [
   {
     slug: "legal-compliance",
     name: "Legal & compliance backbone",
-    description: "RL-1221 recruiting license, BAIRA alignment, and government reporting discipline for every file.",
+    description: "Registered, regulated, and disciplined documentation for every applicant file we process.",
     overview:
-      "Xenium Xcel Consult operates with MOEWOE Bangladesh consent and a recruiting license you can verify. Contracts, demand letters, and worker protections are prepared to withstand scrutiny in both Bangladesh and destination jurisdictions we serve.",
+      "Xenium Xcel Consult operates as an independent, registered, and regulated agency in Ghana. Contracts, demand letters, and worker protections are prepared to withstand scrutiny in both Ghana and the destination jurisdictions we serve.",
     highlights: [
-      "File completeness checks before BMET and embassy submissions",
+      "File completeness checks before embassy submissions",
       "Employer contract review against standard protections",
-      "Transparent fee and deduction disclosures to workers as required",
+      "Transparent fee and disclosure terms agreed before relocation",
     ],
     outcomes: [
       "Lower regulatory risk for employers sponsoring overseas batches",
@@ -364,9 +366,9 @@ export const concerns: Concern[] = [
 ];
 
 export const stats = [
-  { label: "Award-winning programmes", value: "15+" },
+  { label: "Years of operation", value: "5+" },
   { label: "Happy employer partners", value: "500+" },
-  { label: "Core team members", value: "50+" },
+  { label: "Core team members", value: "20" },
   { label: "Customer rating (out of 5)", value: "4.8" },
 ];
 
@@ -382,19 +384,19 @@ export const partners = [
 export const testimonials = [
   {
     quote:
-      "Our experience with Xenium Xcel Consult RL-1221 was truly exceptional. Their consultants provided highly skilled professionals in the positions we needed.",
+      "Our experience with Xenium Xcel Consult was truly exceptional. Their consultants provided highly skilled professionals in the positions we needed.",
     name: "Yesir Qadri",
     title: "CEO, Al Banar Arabian Group",
   },
   {
     quote:
-      "A noteworthy recruiting agency—utmost transparency in the recruitment procedure and an assured competitive advantage.",
+      "A noteworthy recruiting agency — utmost transparency in the recruitment procedure and an assured competitive advantage.",
     name: "Ahmad Al-Qureshi",
     title: "Executive Director, Al-Dirah Catering and Supplies",
   },
   {
     quote:
-      "Xenium Xcel Consult is excellent at long-run relationships with us—we hope they maintain the same with every client.",
+      "Xenium Xcel Consult is excellent at long-run relationships with us — we hope they maintain the same with every client.",
     name: "Alex Mccoy",
     title: "CEO, European Guarding Security",
   },
@@ -402,48 +404,48 @@ export const testimonials = [
 
 export const faqs = [
   {
-    question: "Why Bangladeshi manpower?",
+    question: "Where is Xenium Xcel Consult based?",
     answer:
-      "Bangladesh offers a wide pool of skilled, semi-skilled, and unskilled workers across many trades. Cost structures are competitive versus other labour-exporting countries, and workers are known for discipline, loyalty, and a strong sense of duty.",
+      "We are an independent recruitment and travel agency based in Ghana, serving overseas employers across multiple sectors and destination countries.",
   },
   {
-    question: "Why Xenium Xcel Consult, RL-1221?",
+    question: "Are you a licensed or registered agency?",
     answer:
-      "We are government-approved (RL-1221), MOEWOE consented, and a BAIRA member. Employers receive one-stop support—recruitment, training, ticketing, and digital care—under one accountable brand.",
+      "Yes. Xenium Xcel Consult is an independent, registered, and regulated company that has been operating for over five years.",
   },
   {
-    question: "Does Xenium Xcel Consult post jobs directly?",
+    question: "Which sectors do you recruit for?",
     answer:
-      "Vacancies are published in line with employer mandates and compliance rules. Final selection always follows employer criteria and documented approvals.",
+      "We support oil & gas, manufacturing, service industries, construction, hospitality, and engineering — both skilled and unskilled placements.",
   },
   {
-    question: "How can I gain employment abroad legally?",
+    question: "How does the application process work?",
     answer:
-      "Workers move only through BMET processes, valid demand letters, medicals, orientation, and visa channels for the destination country. We guide each step with transparent timelines.",
+      "Candidates apply through our Apply Available Job page. We review documents, shortlist for employer interviews, and coordinate medicals, training, visa, and ticketing through to deployment.",
   },
   {
-    question: "What is an employment contract?",
+    question: "Do you handle visa processing?",
     answer:
-      "It is the binding agreement between employer and worker covering wages, benefits, duration, and duties—reviewed with workers before deployment.",
+      "Yes. Visa processing is one of our dedicated services — see our Visa Processing page for the full requirement list and step-by-step guidance.",
   },
   {
-    question: "Which countries are popular for overseas jobs?",
+    question: "How quickly can recruitment start?",
     answer:
-      "Demand varies by sector; Middle East states remain strong for construction, services, and manufacturing, with growing opportunities in other regions depending on employer programmes.",
+      "Recruitment starts after requirement confirmation and document readiness. Contact us to align a practical hiring timeline.",
   },
   {
-    question: "What should I do if I have a vacancy?",
+    question: "Can employers monitor progress digitally?",
     answer:
-      "Share your demand letter or requirement brief, quantities, salary bands, and timeline. We respond with a mobilisation plan and compliance checklist within one business day when information is complete.",
+      "Yes. Our digital work capability is designed to provide one-click updates across key recruitment milestones.",
+  },
+  {
+    question: "Do you support interview coordination?",
+    answer:
+      "Yes. We support interview coordination and candidate selection alignment based on employer requirements.",
   },
   {
     question: "What information do you need to proceed?",
     answer:
       "Employer profile, job descriptions, compensation and benefits, contract duration, interview mode, and any country-specific medical or skill tests required.",
-  },
-  {
-    question: "What are your terms and conditions?",
-    answer:
-      "Commercial terms are shared after scope confirmation. Worker protections follow Bangladesh and destination-country law; we do not tolerate fee exploitation or contract substitution.",
   },
 ];

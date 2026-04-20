@@ -24,8 +24,8 @@ export function Testimonials() {
               Testimonial
             </h2>
             <p className="text-slate-300">
-              What employers say about working with {company.name} RL-1221—transparency, skilled placements, and
-              long-run relationships.
+              What employers say about working with {company.name} — transparency, skilled placements, and long-run
+              relationships.
             </p>
           </div>
           <Button asChild variant="gold" size="lg" className="rounded-full">

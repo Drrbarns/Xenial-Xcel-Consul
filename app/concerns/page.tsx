@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   ...buildOgMeta({
     title: "Our Concerns",
     description:
-      "Supportive concerns that make Xenial Xcel Consult a one-stop partner — travel and ticketing, training center, 24/7 digital customer care, and legal compliance under RL-1221.",
+      "Supportive concerns that make Xenium Xcel Consult a one-stop partner — travel and ticketing, training preparation, 24/7 digital customer care, and registered, regulated legal compliance.",
     path: "/concerns",
   }),
 };
@@ -56,8 +56,8 @@ export default function ConcernsPage() {
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-slate-600">
             Employers rarely fail on intent—they fail when travel, training, and compliance drift out of sync. Each
-            concern below is a deliberate extension of our recruiting work, run with the same discipline as BMET and
-            embassy submissions.
+            concern below is a deliberate extension of our recruiting work, run with the same discipline as embassy and
+            visa submissions.
           </p>
         </div>
       </Section>

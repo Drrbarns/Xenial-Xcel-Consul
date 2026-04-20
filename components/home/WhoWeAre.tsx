@@ -25,13 +25,13 @@ export function WhoWeAre() {
               Who we are
             </Badge>
             <h2 className="font-[var(--font-heading)] text-4xl font-bold tracking-tight text-primary md:text-5xl lg:leading-tight">
-              A reliable gateway for <br/>
-              <span className="text-accent">Bangladeshi talent</span>
+              A reliable gateway from <br/>
+              <span className="text-accent">Ghana to the world</span>
             </h2>
             <p className="text-lg leading-relaxed text-slate-600">
-              {company.name} is one of the most trusted independent international employer-oriented manpower recruitment
-              agencies in Bangladesh. We create a reliable gateway for skilled, semi-skilled, and unskilled workers who
-              fit employer demand—duty consented by MOEWOE with recruiting license RL-1221 and membership in BAIRA.
+              {company.name} is an independent recruitment and travel agency based in Ghana. We connect skilled,
+              semi-skilled, and unskilled workers to overseas employers — registered and regulated for more than five
+              years.
             </p>
             <p className="text-lg leading-relaxed text-slate-600">
               Our goal is to supply the right person, with the right skills, at the right time and place. Supportive

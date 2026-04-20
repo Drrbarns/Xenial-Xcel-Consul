@@ -6,6 +6,7 @@ import { WhoWeAre } from "@/components/home/WhoWeAre";
 import { MissionVisionPassion } from "@/components/home/MissionVisionPassion";
 import { ManpowerRoles } from "@/components/home/ManpowerRoles";
 import { QualityServices } from "@/components/home/QualityServices";
+import { VisaProcessingFeature } from "@/components/home/VisaProcessingFeature";
 import { ExpertiseGrid } from "@/components/home/ExpertiseGrid";
 import { GalleryPreview } from "@/components/home/GalleryPreview";
 import { StatsStrip } from "@/components/home/StatsStrip";
@@ -15,9 +16,9 @@ import { FAQ } from "@/components/home/FAQ";
 import { HomeCta } from "@/components/home/HomeCta";
 
 export const metadata: Metadata = buildOgMeta({
-  title: "Xenial Xcel Consult — Recruitment Excellence",
+  title: "Xenium Xcel Consult — Recruitment Excellence",
   description:
-    "Trusted international manpower recruitment agency in Bangladesh. RL-1221 licensed, MOEWOE consented, BAIRA member. Skilled and unskilled workers for employers worldwide.",
+    "Ghana-based recruitment and travel agency. Independent, registered, and regulated for over five years. Skilled and unskilled workers, oil & gas placements, and visa processing for overseas employers.",
   path: "/",
 });
 
@@ -30,6 +31,7 @@ export default function Home() {
       <MissionVisionPassion />
       <ManpowerRoles />
       <QualityServices />
+      <VisaProcessingFeature />
       <ExpertiseGrid />
       <GalleryPreview />
       <StatsStrip />

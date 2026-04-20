@@ -13,7 +13,7 @@ export function Footer() {
           </h3>
           <p className="text-sm text-slate-300 max-w-sm leading-relaxed">{company.positioning}</p>
           <p className="text-xs uppercase tracking-widest text-[#C8A45D] font-semibold mt-4">
-            RL-1221 · MOEWOE Bangladesh · BAIRA
+            Independent · Registered · Ghana-based
           </p>
         </div>
         <div className="space-y-4">

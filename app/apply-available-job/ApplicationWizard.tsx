@@ -289,7 +289,7 @@ export function ApplicationWizard() {
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           <Button asChild variant="gold" size="lg" className="rounded-full px-8">
             <a
-              href="https://wa.me/8801711565979?text=Hello%2C%20I%20just%20submitted%20my%20Oil%20%26%20Gas%20job%20application."
+              href="https://wa.me/233200000000?text=Hello%2C%20I%20just%20submitted%20my%20Oil%20%26%20Gas%20job%20application."
               target="_blank"
               rel="noreferrer"
             >

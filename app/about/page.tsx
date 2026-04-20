@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   ...buildOgMeta({
     title: "About Us",
     description:
-      "Learn about Xenial Xcel Consult (RL-1221) — a government-approved, MOEWOE consented, BAIRA member recruitment agency in Bangladesh with 50+ team members and 500+ employer partners.",
+      "Learn about Xenium Xcel Consult — an independent, Ghana-based recruitment and travel agency, registered and regulated for over five years, with 20 core team members and 500+ employer partners.",
     path: "/about",
   }),
 };
@@ -41,7 +41,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About us"
         title="Know us better"
-        description={`${company.positioning} Licensed RL-1221, MOEWOE Bangladesh consented, and an active BAIRA member—your accountable partner for ethical overseas deployment.`}
+        description={`${company.positioning} Your accountable partner for ethical overseas placements and visa processing.`}
         bgImage="/images/hero_workspace_1776009199492.png"
       />
 
@@ -56,9 +56,8 @@ export default function AboutPage() {
                 Who we are
               </h2>
               <p className="text-lg leading-relaxed text-slate-600">
-                {company.name} is one of the most trusted independent international employer-oriented manpower recruitment
-                agencies in Bangladesh—a reliable gateway for skilled, semi-skilled, and unskilled workers matched to
-                employer demand.
+                {company.name} is an independent recruitment and travel agency based in Ghana — a reliable gateway for
+                skilled, semi-skilled, and unskilled workers matched to overseas employer demand.
               </p>
               <p className="text-lg leading-relaxed text-slate-600">
                 We are gaining recognition for professional service to valued clients. Supportive concerns—air ticketing,
@@ -68,15 +67,14 @@ export default function AboutPage() {
                 <div className="rounded-2xl border border-primary/10 bg-primary/[0.03] p-5">
                   <p className="text-xs font-semibold uppercase tracking-widest text-accent">What we solve</p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                    Overseas hiring compliance, worker readiness, mobilisation batches, and transparent status for
-                    principals.
+                    Overseas hiring readiness, visa processing, mobilisation batches, and transparent status for principals.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-primary/10 bg-primary/[0.03] p-5">
                   <p className="text-xs font-semibold uppercase tracking-widest text-accent">How we deliver</p>
                   <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                    Licensed RL-1221 operations, MOEWOE consent, BAIRA alignment, and digital tools so updates are visible
-                    with one click.
+                    Registered, regulated operations and digital tools so updates are visible with one click — from
+                    Accra to your destination country.
                   </p>
                 </div>
               </div>
@@ -260,7 +258,7 @@ export default function AboutPage() {
                       <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md">
                         <Globe2 className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden />
                         <span className="line-clamp-2 md:line-clamp-none">
-                          {company.destinationCountries.join(" · ")} — NYC governance hub
+                          {company.destinationCountries.join(" · ")} — Accra coordination hub
                         </span>
                       </div>
                     </div>

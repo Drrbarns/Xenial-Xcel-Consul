@@ -7,7 +7,7 @@ function getResend() {
   return new Resend(key);
 }
 
-const TO_EMAIL = process.env.APPLICATION_EMAIL || "info@gulfint-bd.com";
+const TO_EMAIL = process.env.APPLICATION_EMAIL || "info@xeniumxcel.com";
 
 type ApplicationData = {
   personal: Record<string, string>;
@@ -73,7 +73,7 @@ function buildEmailHtml(data: ApplicationData): string {
       ${sectionHtml("Fees & Payment Terms", fees)}
       ${sectionHtml("Technical & Industry Questions", technical)}
       <p style="font-size:12px;color:#94a3b8;margin-top:32px;text-align:center">
-        Submitted from xenialxcelconsult.com application form
+        Submitted from xeniumxcel.com application form
       </p>
     </div>
   </body>
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
     const resend = getResend();
 
     const { error } = await resend.emails.send({
-      from: "Xenial Xcel Consult <onboarding@resend.dev>",
+      from: "Xenium Xcel Consult <onboarding@resend.dev>",
       to: [TO_EMAIL],
       replyTo: applicantEmail || undefined,
       subject: `New Application: ${applicantName} — Oil & Gas (Australia)`,
