@@ -1,4 +1,10 @@
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/seo";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  SITE_LOGO_URL,
+  OG_IMAGE,
+} from "@/lib/seo";
 
 function JsonLdScript({ data }: { data: Record<string, unknown> }) {
   return (
@@ -18,8 +24,8 @@ export function OrganizationJsonLd() {
         name: SITE_NAME,
         alternateName: "Xenium Xcel Consult",
         url: SITE_URL,
-        logo: `${SITE_URL}/icon-512.png`,
-        image: `${SITE_URL}/og-image.png`,
+        logo: SITE_LOGO_URL,
+        image: OG_IMAGE,
         description: SITE_DESCRIPTION,
         address: {
           "@type": "PostalAddress",
@@ -66,7 +72,7 @@ export function WebSiteJsonLd() {
         publisher: {
           "@type": "Organization",
           name: SITE_NAME,
-          logo: { "@type": "ImageObject", url: `${SITE_URL}/icon-512.png` },
+          logo: { "@type": "ImageObject", url: SITE_LOGO_URL },
         },
         potentialAction: {
           "@type": "SearchAction",

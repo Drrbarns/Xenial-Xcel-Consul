@@ -4,7 +4,14 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ApplyAvailableJobButton } from "@/components/layout/ApplyAvailableJobButton";
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, OG_IMAGE, KEYWORDS } from "@/lib/seo";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  OG_IMAGE,
+  SOCIAL_SHARE_IMAGE,
+  KEYWORDS,
+} from "@/lib/seo";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 
 const sora = Sora({
@@ -45,6 +52,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.ico",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -55,8 +71,10 @@ export const metadata: Metadata = {
     images: [
       {
         url: OG_IMAGE,
+        secureUrl: OG_IMAGE,
         width: 1200,
         height: 630,
+        type: "image/png",
         alt: `${SITE_NAME} — Recruitment Excellence`,
       },
     ],
@@ -65,7 +83,14 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${SITE_NAME} — Recruitment Excellence`,
     description: SITE_DESCRIPTION,
-    images: [OG_IMAGE],
+    images: [
+      {
+        url: SOCIAL_SHARE_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} — Recruitment Excellence`,
+      },
+    ],
   },
   robots: {
     index: true,

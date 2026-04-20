@@ -8,7 +8,15 @@ export const SITE_NAME = "Xenial Xcel Consult";
 export const SITE_DESCRIPTION =
   "Xenium Xcel Consult is a Ghana-based recruitment and travel agency connecting qualified candidates with overseas employers across oil & gas, construction, hospitality, and engineering — independent, registered, and regulated for over five years.";
 
+/** Open Graph, Twitter / X cards, LinkedIn, and other social previews (1200×630, logo on brand canvas). */
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
+/** Same asset as OG — explicit alias for social share metadata. */
+export const SOCIAL_SHARE_IMAGE = OG_IMAGE;
+
+/** Primary brand mark (transparent PNG) — navbar, footer, structured data */
+export const SITE_LOGO_PATH = "/images/logo.png";
+export const SITE_LOGO_URL = `${SITE_URL}${SITE_LOGO_PATH}`;
 
 export const KEYWORDS = [
   "recruitment agency Ghana",
