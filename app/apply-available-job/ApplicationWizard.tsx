@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { ResendTestModeHint } from "@/components/forms/ResendTestModeHint";
 import Link from "next/link";
 
 const STEPS = [
@@ -420,13 +421,11 @@ export function ApplicationWizard() {
       {error && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 space-y-2">
           <p className="font-medium">{error}</p>
+          <ResendTestModeHint message={error} />
           <p className="text-xs text-red-700/90 leading-relaxed">
-            Common fixes: add <code className="rounded bg-red-100 px-1">RESEND_API_KEY</code> on your host; verify your
-            domain in Resend and set <code className="rounded bg-red-100 px-1">RESEND_FROM</code> to that domain; with
-            Resend&apos;s test sender, the inbox env (<code className="rounded bg-red-100 px-1">FORMS_EMAIL</code> /{" "}
-            <code className="rounded bg-red-100 px-1">APPLICATION_EMAIL</code> /{" "}
-            <code className="rounded bg-red-100 px-1">CONTACT_EMAIL</code>) must be an address Resend allows until
-            your domain is verified.
+            Other checks: <code className="rounded bg-red-100 px-1">RESEND_API_KEY</code> set on the host;{" "}
+            <code className="rounded bg-red-100 px-1">RESEND_FROM</code> matches a verified domain when not using the
+            test sender.
           </p>
         </div>
       )}

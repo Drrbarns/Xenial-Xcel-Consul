@@ -3,6 +3,7 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { Paperclip, X } from "lucide-react";
 import { company } from "@/lib/mockData";
+import { ResendTestModeHint } from "@/components/forms/ResendTestModeHint";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -225,9 +226,10 @@ export function ContactForm() {
         </p>
       )}
       {status === "error" && errorMessage && (
-        <p className="text-sm font-medium text-red-600" role="alert">
-          {errorMessage}
-        </p>
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800" role="alert">
+          <p className="font-medium text-red-700">{errorMessage}</p>
+          <ResendTestModeHint message={errorMessage} />
+        </div>
       )}
     </form>
   );
