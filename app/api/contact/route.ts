@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getResend, getResendFrom } from "@/lib/resend";
+import { getResend, getResendFrom, formatResendError } from "@/lib/resend";
 
 const TO_EMAIL =
   process.env.CONTACT_EMAIL?.trim() ||
@@ -111,7 +111,19 @@ export async function POST(request: Request) {
       attachments = [{ filename: safeFilename(file.name), content: buf }];
     }
 
-    const resend = getResend();
+    let resend;
+    try {
+      resend = getResend();
+    } catch {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Email service is not configured. Add RESEND_API_KEY to your hosting environment.",
+        },
+        { status: 500 },
+      );
+    }
 
     const { error } = await resend.emails.send({
       from: getResendFrom(),
@@ -130,10 +142,10 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("Resend contact error:", error);
+      console.error("Resend contact error:", JSON.stringify(error, null, 2));
       return NextResponse.json(
-        { success: false, message: "Failed to send email." },
-        { status: 500 },
+        { success: false, message: formatResendError(error) },
+        { status: 502 },
       );
     }
 

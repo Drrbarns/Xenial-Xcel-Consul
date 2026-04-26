@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import {
+  useState,
+  useCallback,
+  useRef,
+  type ChangeEvent,
+  type RefObject,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
@@ -58,6 +64,8 @@ const paymentOptions = [
   "At the office now",
   "On the day of biometric appointment at the Australian Visa Biometric Center (VFS)",
 ];
+
+const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
 
 type FormData = {
   personal: Record<string, string>;
@@ -193,6 +201,9 @@ export function ApplicationWizard() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [combinedFile, setCombinedFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const uploadInputRef = useRef<HTMLInputElement>(null);
 
   const totalSteps = STEPS.length;
   const progress = ((step + 1) / totalSteps) * 100;
@@ -241,10 +252,15 @@ export function ApplicationWizard() {
     setError("");
 
     try {
+      const fd = new FormData();
+      fd.append("application", JSON.stringify(formData));
+      if (combinedFile) {
+        fd.append("attachment", combinedFile, combinedFile.name);
+      }
+
       const res = await fetch("/api/apply", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: fd,
       });
 
       const result = await res.json();
@@ -375,15 +391,41 @@ export function ApplicationWizard() {
             {step === 5 && <StepSponsorship {...fieldProps} />}
             {step === 6 && <StepFees {...fieldProps} />}
             {step === 7 && <StepTechnical {...fieldProps} />}
-            {step === 8 && <StepUpload />}
+            {step === 8 && (
+              <StepUpload
+                file={combinedFile}
+                fileError={uploadError}
+                inputRef={uploadInputRef}
+                onFileChange={(file) => {
+                  setUploadError(null);
+                  if (!file) {
+                    setCombinedFile(null);
+                    return;
+                  }
+                  if (file.size > MAX_UPLOAD_BYTES) {
+                    setCombinedFile(null);
+                    setUploadError("Please use a combined document under 25 MB, or email us a download link.");
+                    if (uploadInputRef.current) uploadInputRef.current.value = "";
+                    return;
+                  }
+                  setCombinedFile(file);
+                }}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          {error}
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 space-y-2">
+          <p className="font-medium">{error}</p>
+          <p className="text-xs text-red-700/90 leading-relaxed">
+            Common fixes: add <code className="rounded bg-red-100 px-1">RESEND_API_KEY</code> on your host; verify your
+            domain in Resend and set <code className="rounded bg-red-100 px-1">RESEND_FROM</code> to that domain; with
+            Resend&apos;s test sender, <code className="rounded bg-red-100 px-1">APPLICATION_EMAIL</code> must be an
+            address Resend allows for testing (often your own signup email) until the domain is verified.
+          </p>
         </div>
       )}
 
@@ -645,7 +687,22 @@ function StepTechnical({ formData, update }: FieldProps) {
   );
 }
 
-function StepUpload() {
+function StepUpload({
+  file,
+  fileError,
+  inputRef,
+  onFileChange,
+}: {
+  file: File | null;
+  fileError: string | null;
+  inputRef: RefObject<HTMLInputElement | null>;
+  onFileChange: (file: File | null) => void;
+}) {
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] ?? null;
+    onFileChange(f);
+  }
+
   return (
     <div className="space-y-5">
       <StepHeading>Upload Documents & Submit</StepHeading>
@@ -667,17 +724,50 @@ function StepUpload() {
       </ol>
       <div className="space-y-2">
         <FieldLabel>Upload Combined Document File</FieldLabel>
-        <div className="flex items-center justify-center rounded-xl border-2 border-dashed border-primary/20 bg-slate-50 p-10 text-center">
-          <div className="space-y-2">
-            <Upload className="mx-auto h-8 w-8 text-slate-400" />
-            <p className="text-sm text-slate-600">
-              Drag and drop or{" "}
-              <span className="font-medium text-primary cursor-pointer">browse files</span>
-            </p>
-            <p className="text-xs text-slate-400">PDF, DOC, or ZIP — max 25 MB</p>
-            <Input type="file" className="mt-2" />
+        <input
+          ref={inputRef}
+          id="application-combined-file"
+          type="file"
+          className="sr-only"
+          accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg,.webp"
+          onChange={handleInputChange}
+        />
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          className="flex w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-primary/20 bg-slate-50 p-10 text-center transition-colors hover:border-primary/40 hover:bg-slate-100/80"
+        >
+          <Upload className="mx-auto h-8 w-8 text-slate-400" />
+          <p className="mt-2 text-sm text-slate-600">
+            <span className="font-medium text-primary">Browse files</span>
+            <span className="text-slate-500"> — PDF, DOC, ZIP, or images</span>
+          </p>
+          <p className="text-xs text-slate-400">Max 25 MB — attached to your application email</p>
+        </button>
+        {file && (
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/15 bg-white px-4 py-3 text-sm text-slate-700">
+            <span className="min-w-0 truncate font-medium" title={file.name}>
+              {file.name}
+            </span>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="shrink-0 rounded-full"
+              onClick={() => {
+                if (inputRef.current) inputRef.current.value = "";
+                onFileChange(null);
+              }}
+            >
+              Remove
+            </Button>
           </div>
-        </div>
+        )}
+        {fileError && (
+          <p className="text-xs font-medium text-red-600" role="alert">
+            {fileError}
+          </p>
+        )}
       </div>
     </div>
   );
