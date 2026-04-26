@@ -423,8 +423,10 @@ export function ApplicationWizard() {
           <p className="text-xs text-red-700/90 leading-relaxed">
             Common fixes: add <code className="rounded bg-red-100 px-1">RESEND_API_KEY</code> on your host; verify your
             domain in Resend and set <code className="rounded bg-red-100 px-1">RESEND_FROM</code> to that domain; with
-            Resend&apos;s test sender, <code className="rounded bg-red-100 px-1">APPLICATION_EMAIL</code> must be an
-            address Resend allows for testing (often your own signup email) until the domain is verified.
+            Resend&apos;s test sender, the inbox env (<code className="rounded bg-red-100 px-1">FORMS_EMAIL</code> /{" "}
+            <code className="rounded bg-red-100 px-1">APPLICATION_EMAIL</code> /{" "}
+            <code className="rounded bg-red-100 px-1">CONTACT_EMAIL</code>) must be an address Resend allows until
+            your domain is verified.
           </p>
         </div>
       )}

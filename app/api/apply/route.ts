@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
+import { FORMS_INBOX_EMAIL } from "@/lib/forms-inbox";
 import { getResend, getResendFrom, formatResendError } from "@/lib/resend";
-
-const TO_EMAIL = process.env.APPLICATION_EMAIL || "info@xeniumxcel.com";
 const MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024;
 
 type ApplicationData = {
@@ -185,7 +184,7 @@ export async function POST(request: Request) {
 
     const { error } = await resend.emails.send({
       from: getResendFrom(),
-      to: [TO_EMAIL],
+      to: [FORMS_INBOX_EMAIL],
       replyTo: applicantEmail || undefined,
       subject: `New Application: ${applicantName} — Oil & Gas (Australia)`,
       html: buildEmailHtml(data),
