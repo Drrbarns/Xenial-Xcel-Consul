@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ResendTestModeHint } from "@/components/forms/ResendTestModeHint";
+import { isValidEmailString } from "@/lib/email-validation";
 import Link from "next/link";
 
 const STEPS = [
@@ -251,6 +252,13 @@ export function ApplicationWizard() {
   async function handleSubmit() {
     setSubmitting(true);
     setError("");
+
+    const applicantEmail = formData.personal["Email Address"]?.trim() ?? "";
+    if (!isValidEmailString(applicantEmail)) {
+      setError("Please go back to the Personal step and enter a valid email address.");
+      setSubmitting(false);
+      return;
+    }
 
     try {
       const fd = new FormData();

@@ -191,17 +191,17 @@ export async function POST(request: Request) {
     console.log("[apply] sending via Resend", {
       from: getResendFrom(),
       to: FORMS_INBOX_EMAIL,
-      replyTo: applicantEmail ?? null,
+      replyTo: applicantEmail ?? "(omitted — invalid or missing)",
       hasAttachment: Boolean(attachments?.length),
     });
 
     const { data: sent, error } = await resend.emails.send({
       from: getResendFrom(),
       to: [FORMS_INBOX_EMAIL],
-      replyTo: applicantEmail,
+      ...(applicantEmail ? { replyTo: applicantEmail } : {}),
       subject: `New Application: ${applicantName} — Oil & Gas (Australia)`,
       html: buildEmailHtml(data),
-      attachments,
+      ...(attachments?.length ? { attachments } : {}),
     });
 
     if (error) {
