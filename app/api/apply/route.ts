@@ -188,7 +188,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const { error } = await resend.emails.send({
+    console.log("[apply] sending via Resend", {
+      from: getResendFrom(),
+      to: FORMS_INBOX_EMAIL,
+      replyTo: applicantEmail ?? null,
+      hasAttachment: Boolean(attachments?.length),
+    });
+
+    const { data: sent, error } = await resend.emails.send({
       from: getResendFrom(),
       to: [FORMS_INBOX_EMAIL],
       replyTo: applicantEmail,
@@ -205,7 +212,11 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true });
+    console.log("[apply] Resend accepted", {
+      id: sent?.id,
+      to: FORMS_INBOX_EMAIL,
+    });
+    return NextResponse.json({ success: true, id: sent?.id ?? null });
   } catch (err) {
     console.error("API /api/apply error:", err);
     return NextResponse.json(
