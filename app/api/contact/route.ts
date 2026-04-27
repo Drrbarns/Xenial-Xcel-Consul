@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { FORMS_INBOX_EMAIL } from "@/lib/forms-inbox";
-import { getResend, getResendFrom, formatResendError } from "@/lib/resend";
+import {
+  getResend,
+  getResendFrom,
+  formatResendError,
+  sanitizeEmail,
+} from "@/lib/resend";
 
 const MAX_ATTACHMENT_BYTES = 15 * 1024 * 1024;
 
@@ -82,6 +87,14 @@ export async function POST(request: Request) {
       );
     }
 
+    const replyToEmail = sanitizeEmail(email);
+    if (!replyToEmail) {
+      return NextResponse.json(
+        { success: false, message: "Please enter a valid email address." },
+        { status: 400 },
+      );
+    }
+
     if (message.length < 20) {
       return NextResponse.json(
         { success: false, message: "Message is too short." },
@@ -124,7 +137,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
       from: getResendFrom(),
       to: [FORMS_INBOX_EMAIL],
-      replyTo: email,
+      replyTo: replyToEmail,
       subject: `[${topicLabel}] Inquiry from ${name}`,
       html: buildContactHtml({
         name,

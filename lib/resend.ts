@@ -14,6 +14,20 @@ export function getResendFrom() {
   );
 }
 
+/**
+ * Resend enforces a strict email format on `from` / `to` / `replyTo`.
+ * Returns the trimmed address when it looks valid, otherwise `undefined`.
+ * A very pragmatic regex — avoids false negatives for real-world addresses while
+ * catching empty / obviously malformed values (no @, spaces, missing TLD, etc.).
+ */
+export function sanitizeEmail(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  const EMAIL_RE = /^[^\s<>@,;"]+@[^\s<>@,;"]+\.[^\s<>@,;"]{2,}$/;
+  return EMAIL_RE.test(trimmed) ? trimmed : undefined;
+}
+
 /** Resend SDK returns `{ message }` on failure — surface it so production issues are diagnosable. */
 export function formatResendError(error: unknown): string {
   if (error == null) return "Failed to send email.";

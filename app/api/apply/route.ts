@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { FORMS_INBOX_EMAIL } from "@/lib/forms-inbox";
-import { getResend, getResendFrom, formatResendError } from "@/lib/resend";
+import {
+  getResend,
+  getResendFrom,
+  formatResendError,
+  sanitizeEmail,
+} from "@/lib/resend";
 const MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024;
 
 type ApplicationData = {
@@ -152,8 +157,9 @@ export async function POST(request: Request) {
 
     const applicantName =
       data.personal["Full Name"] || data.personal["full_name"] || "Unknown";
-    const applicantEmail =
-      data.personal["Email Address"] || data.personal["email"] || "";
+    const applicantEmail = sanitizeEmail(
+      data.personal["Email Address"] || data.personal["email"] || "",
+    );
 
     let attachments: { filename: string; content: Buffer }[] | undefined;
     if (file) {
@@ -185,7 +191,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
       from: getResendFrom(),
       to: [FORMS_INBOX_EMAIL],
-      replyTo: applicantEmail || undefined,
+      replyTo: applicantEmail,
       subject: `New Application: ${applicantName} — Oil & Gas (Australia)`,
       html: buildEmailHtml(data),
       attachments,
