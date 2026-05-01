@@ -9,9 +9,11 @@ import {
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  AlertTriangle,
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
+  Download,
   FileText,
   User,
   Briefcase,
@@ -22,12 +24,14 @@ import {
   Wrench,
   Upload,
   Loader2,
+  X,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ResendTestModeHint } from "@/components/forms/ResendTestModeHint";
 import { isValidEmailString } from "@/lib/email-validation";
+import { generateApplicationPdf } from "@/lib/applicationPdf";
 import Link from "next/link";
 
 const STEPS = [
@@ -68,11 +72,14 @@ const paymentOptions = [
 ];
 
 const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+const MAX_TOTAL_UPLOAD_BYTES = 25 * 1024 * 1024;
+const ROLE_OTHER_KEY = "Other Role (please specify)";
 
 type FormData = {
   personal: Record<string, string>;
   professional: Record<string, string>;
   roles: string[];
+  otherRole: string;
   salary: string;
   sponsorship: Record<string, string>;
   fees: Record<string, string>;
@@ -83,6 +90,7 @@ const initialFormData: FormData = {
   personal: {},
   professional: {},
   roles: [],
+  otherRole: "",
   salary: "",
   sponsorship: {},
   fees: {},
@@ -94,6 +102,7 @@ type FieldProps = {
   update: (section: keyof FormData, key: string, value: string) => void;
   toggleRole: (role: string) => void;
   setSalary: (value: string) => void;
+  setOtherRole: (value: string) => void;
 };
 
 function YesNo({
@@ -203,8 +212,9 @@ export function ApplicationWizard() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-  const [combinedFile, setCombinedFile] = useState<File | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
   const uploadInputRef = useRef<HTMLInputElement>(null);
 
   const totalSteps = STEPS.length;
@@ -231,6 +241,40 @@ export function ApplicationWizard() {
 
   const setSalary = useCallback((value: string) => {
     setFormData((prev) => ({ ...prev, salary: value }));
+  }, []);
+
+  const setOtherRole = useCallback((value: string) => {
+    setFormData((prev) => ({ ...prev, otherRole: value }));
+  }, []);
+
+  const addFiles = useCallback((files: FileList | File[]) => {
+    const incoming = Array.from(files);
+    if (incoming.length === 0) return;
+
+    setUploadError(null);
+    setUploadedFiles((prev) => {
+      const next = [...prev];
+      for (const f of incoming) {
+        if (f.size > MAX_UPLOAD_BYTES) {
+          setUploadError(`"${f.name}" is larger than 25 MB. Please compress or split it.`);
+          continue;
+        }
+        if (next.some((existing) => existing.name === f.name && existing.size === f.size)) continue;
+        next.push(f);
+      }
+      const total = next.reduce((sum, f) => sum + f.size, 0);
+      if (total > MAX_TOTAL_UPLOAD_BYTES) {
+        setUploadError(`Combined upload is over ${Math.round(MAX_TOTAL_UPLOAD_BYTES / (1024 * 1024))} MB. Remove a file or send via WhatsApp.`);
+        return prev;
+      }
+      return next;
+    });
+  }, []);
+
+  const removeFile = useCallback((index: number) => {
+    setUploadError(null);
+    setUploadedFiles((prev) => prev.filter((_, i) => i !== index));
+    if (uploadInputRef.current) uploadInputRef.current.value = "";
   }, []);
 
   function goNext() {
@@ -263,8 +307,8 @@ export function ApplicationWizard() {
     try {
       const fd = new FormData();
       fd.append("application", JSON.stringify(formData));
-      if (combinedFile) {
-        fd.append("attachment", combinedFile, combinedFile.name);
+      for (const f of uploadedFiles) {
+        fd.append("attachments", f, f.name);
       }
 
       const res = await fetch("/api/apply", {
@@ -288,7 +332,25 @@ export function ApplicationWizard() {
     }
   }
 
-  const fieldProps: FieldProps = { formData, update, toggleRole, setSalary };
+  async function handleDownloadPdf() {
+    setDownloadingPdf(true);
+    try {
+      await generateApplicationPdf(formData);
+    } catch (err) {
+      console.error("PDF generation error:", err);
+      setError("Could not generate the PDF copy. Please try again.");
+    } finally {
+      setDownloadingPdf(false);
+    }
+  }
+
+  const fieldProps: FieldProps = {
+    formData,
+    update,
+    toggleRole,
+    setSalary,
+    setOtherRole,
+  };
 
   if (submitted) {
     return (
@@ -308,9 +370,36 @@ export function ApplicationWizard() {
           within 3–5 business days regarding next steps.
         </p>
         <p className="text-xs text-slate-500">
-          Note: 3 to 5 weeks to complete your offer, then biometric fingerprint. After
-          biometric, it takes 60 days to receive your visa.
+          Note: Xenium Xcel Consult will use 3 to 4 weeks to complete this offer process
+          for biometric fingerprint. After biometric, it takes 60 to 90 days to receive
+          your visa.
         </p>
+        <div className="rounded-xl bg-slate-50 border border-primary/10 p-5 text-left max-w-md mx-auto space-y-2">
+          <p className="text-sm font-semibold text-primary">Keep a copy for your records</p>
+          <p className="text-xs text-slate-600">
+            Download a PDF copy of your submitted application (with our logo) for safekeeping
+            and reference at the office.
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleDownloadPdf}
+            disabled={downloadingPdf}
+            className="mt-2 gap-2 rounded-full"
+          >
+            {downloadingPdf ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Preparing PDF…
+              </>
+            ) : (
+              <>
+                <Download className="h-4 w-4" />
+                Download as PDF
+              </>
+            )}
+          </Button>
+        </div>
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           <Button asChild variant="gold" size="lg" className="rounded-full px-8">
             <a
@@ -402,23 +491,11 @@ export function ApplicationWizard() {
             {step === 7 && <StepTechnical {...fieldProps} />}
             {step === 8 && (
               <StepUpload
-                file={combinedFile}
+                files={uploadedFiles}
                 fileError={uploadError}
                 inputRef={uploadInputRef}
-                onFileChange={(file) => {
-                  setUploadError(null);
-                  if (!file) {
-                    setCombinedFile(null);
-                    return;
-                  }
-                  if (file.size > MAX_UPLOAD_BYTES) {
-                    setCombinedFile(null);
-                    setUploadError("Please use a combined document under 25 MB, or email us a download link.");
-                    if (uploadInputRef.current) uploadInputRef.current.value = "";
-                    return;
-                  }
-                  setCombinedFile(file);
-                }}
+                onAddFiles={addFiles}
+                onRemoveFile={removeFile}
               />
             )}
           </motion.div>
@@ -498,17 +575,18 @@ function StepAbout() {
       <StepHeading>About This Programme</StepHeading>
       <div className="rounded-xl bg-slate-50 p-5 space-y-3 text-sm text-slate-600 leading-relaxed">
         <p>
-          Xenial Xcel Consult is a travel and recruitment agency based in Accra. We
-          assist qualified candidates in securing employment opportunities in Australia
-          within the oil and gas sector and other jobs.
+          XENIUM XCEL CONSULT is a travel and recruitment agency based in Accra. We
+          assist qualified candidates in securing employment opportunities across the
+          globe and within the oil and gas sector and other jobs.
         </p>
         <p>
-          Selected applicants may receive employer sponsorship, with structured repayment
+          But this position is <strong>only Oil and Gas Sector to Australia</strong>, and
+          selected applicants may receive employer sponsorship, with structured repayment
           terms agreed upon before relocation.
         </p>
       </div>
       <div className="space-y-3">
-        <FieldLabel>Required Documents (combine into ONE file before uploading):</FieldLabel>
+        <FieldLabel>Required Documents to upload at the final step:</FieldLabel>
         <ul className="grid gap-2 md:grid-cols-2">
           {documentChecklist.map((item) => (
             <li
@@ -561,7 +639,7 @@ function StepProfessional({ formData, update }: FieldProps) {
   );
 }
 
-function StepRole({ formData, toggleRole }: FieldProps) {
+function StepRole({ formData, toggleRole, setOtherRole }: FieldProps) {
   return (
     <div className="space-y-5">
       <StepHeading>Job Role Selection</StepHeading>
@@ -586,6 +664,17 @@ function StepRole({ formData, toggleRole }: FieldProps) {
           </label>
         ))}
       </div>
+      <div className="space-y-1.5 pt-2">
+        <FieldLabel>{ROLE_OTHER_KEY}</FieldLabel>
+        <Input
+          value={formData.otherRole}
+          onChange={(e) => setOtherRole(e.target.value)}
+          placeholder="If your position is not in the list above, write it here"
+        />
+        <p className="text-xs text-slate-500">
+          Leave blank if one of the options above already matches your role.
+        </p>
+      </div>
     </div>
   );
 }
@@ -599,8 +688,11 @@ function StepSalary({ formData, setSalary }: FieldProps) {
         <Input
           value={formData.salary}
           onChange={(e) => setSalary(e.target.value)}
-          placeholder="e.g. AUD 85,000 per year"
+          placeholder="e.g. AUD 45 per hour"
         />
+        <p className="text-xs text-slate-500">
+          Quote your expected pay <strong>per hour</strong>.
+        </p>
       </div>
     </div>
   );
@@ -616,11 +708,29 @@ function StepSponsorship({ formData, update }: FieldProps) {
         terms after employment begins.
       </div>
       <div className="space-y-4">
-        <YesNo label="1. Xenium Xcel Consult will assist you in securing this role in Australia. Do you agree?" section="sponsorship" fieldKey="Assist Agreement" formData={formData} update={update} />
+        <YesNo label="1. Xenium Xcel Consult will assist you in securing this role in Australia while you pay for that. Do you agree?" section="sponsorship" fieldKey="Assist Agreement" formData={formData} update={update} />
         <YesNo label="2. Employers in Australia will sponsor your employment, and you will repay the sponsorship cost. Do you agree?" section="sponsorship" fieldKey="Sponsor Repayment Agreement" formData={formData} update={update} />
-        <YesNo label="3. The total sponsorship cost is USD 12,000, to be repaid after employment. Do you agree?" section="sponsorship" fieldKey="USD 12,000 Agreement" formData={formData} update={update} />
+        <YesNo label="3. The total sponsorship cost is AUD 12,000 to 17,000, to repay for some period after employment (you pay when you are in Australia). Do you agree?" section="sponsorship" fieldKey="Sponsorship Cost Agreement" formData={formData} update={update} />
         <Field label="4. How long would be convenient for you to repay this amount?" section="sponsorship" fieldKey="Repayment Duration" formData={formData} update={update} placeholder="e.g. 12 months" />
-        <YesNo label="5. Is all your documents ready to upload and submit?" section="sponsorship" fieldKey="Documents Ready" formData={formData} update={update} />
+        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600 mt-0.5" />
+            <div className="space-y-3 text-sm text-amber-900 leading-relaxed flex-1">
+              <p className="font-semibold">Caution — Document Upload</p>
+              <p>
+                You can <strong>not upload more than the documents listed</strong> in the upload
+                step. Make sure all required files are ready before you reach that step.
+              </p>
+              <YesNo
+                label="5. Is all your combined documents ready to upload and submit?"
+                section="sponsorship"
+                fieldKey="Documents Ready"
+                formData={formData}
+                update={update}
+              />
+            </div>
+          </div>
+        </div>
         <YesNo label="6. Have you violated any travel work and pay repayment before?" section="sponsorship" fieldKey="Prior Violation" formData={formData} update={update} />
       </div>
     </div>
@@ -634,9 +744,9 @@ function StepFees({ formData, update }: FieldProps) {
     <div className="space-y-5">
       <StepHeading>Fees & Payment Terms</StepHeading>
       <div className="space-y-4">
-        <YesNo label="1. We do not take processing advance payment without clear proof of job placement, but we charge administration fees. Do you agree?" section="fees" fieldKey="Admin Fees Agreement" formData={formData} update={update} />
+        <YesNo label="1. Xenium Xcel Consult does not take processing fee or administration advance payment without clear proof of job placement, but we charge registration fees in advance. Do you agree?" section="fees" fieldKey="Admin Fees Agreement" formData={formData} update={update} />
         <YesNo label="2. Registration fee (not exceeding GH₵ 1,000) payable at our office as partaking fee. Do you accept?" section="fees" fieldKey="Registration Fee Acceptance" formData={formData} update={update} />
-        <YesNo label="3. Service fee of GH₵ 20,000 is required before travel. Do you agree?" section="fees" fieldKey="Service Fee Agreement" formData={formData} update={update} />
+        <YesNo label="3. Xenium Xcel Consult service fee to pay if job placement is complete is GH₵ 20,000 (this amount excludes what you will work and pay to the company). Do you agree?" section="fees" fieldKey="Service Fee Agreement" formData={formData} update={update} />
         <fieldset className="space-y-3">
           <legend className="text-sm font-medium text-slate-700">
             4. How would you prefer to pay the service fee of GH₵ 20,000?
@@ -686,37 +796,51 @@ function StepTechnical({ formData, update }: FieldProps) {
         <YesNo label="7. Are you medically fit for offshore or physically demanding environments?" section="technical" fieldKey="Medically Fit" formData={formData} update={update} />
         <YesNo label="8. Do you have experience working with multinational teams?" section="technical" fieldKey="Multinational Teams" formData={formData} update={update} />
         <YesNo label="9. Are you willing to undergo additional training or certification by Australian employers?" section="technical" fieldKey="Additional Training" formData={formData} update={update} />
-        <Field label="10. What is the meaning of travelling sponsorship? List as many as you know." section="technical" fieldKey="Sponsorship Meaning" formData={formData} update={update} multiline />
+        <Field label="10. What is the meaning of travelling sponsorship work and pay? List as many as you know." section="technical" fieldKey="Sponsorship Meaning" formData={formData} update={update} multiline />
         <div className="rounded-xl bg-accent/10 border border-accent/20 p-4 text-sm text-slate-700">
-          <strong>Note:</strong> We use 3 to 5 weeks to complete this offer for biometric
-          fingerprint. After biometric, it takes 60 days to receive your visa.
+          <strong>Notice:</strong> Xenium Xcel Consult will use 3 to 4 weeks to complete
+          this offer process for biometric fingerprint. After biometric, it takes 60 to
+          90 days to receive your visa.
         </div>
       </div>
     </div>
   );
 }
 
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 function StepUpload({
-  file,
+  files,
   fileError,
   inputRef,
-  onFileChange,
+  onAddFiles,
+  onRemoveFile,
 }: {
-  file: File | null;
+  files: File[];
   fileError: string | null;
   inputRef: RefObject<HTMLInputElement | null>;
-  onFileChange: (file: File | null) => void;
+  onAddFiles: (files: FileList | File[]) => void;
+  onRemoveFile: (index: number) => void;
 }) {
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0] ?? null;
-    onFileChange(f);
+    if (e.target.files && e.target.files.length > 0) {
+      onAddFiles(e.target.files);
+      e.target.value = "";
+    }
   }
+
+  const totalSize = files.reduce((sum, f) => sum + f.size, 0);
 
   return (
     <div className="space-y-5">
       <StepHeading>Upload Documents & Submit</StepHeading>
       <p className="text-sm text-slate-600">
-        Combine all documents below into <strong>one file</strong> before uploading:
+        Upload each of the documents below. You can attach multiple files at once or add
+        them one by one.
       </p>
       <ol className="grid gap-2 md:grid-cols-2">
         {documentChecklist.map((item, i) => (
@@ -732,11 +856,12 @@ function StepUpload({
         ))}
       </ol>
       <div className="space-y-2">
-        <FieldLabel>Upload Combined Document File</FieldLabel>
+        <FieldLabel>Upload Documents</FieldLabel>
         <input
           ref={inputRef}
-          id="application-combined-file"
+          id="application-files"
           type="file"
+          multiple
           className="sr-only"
           accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg,.webp"
           onChange={handleInputChange}
@@ -751,25 +876,44 @@ function StepUpload({
             <span className="font-medium text-primary">Browse files</span>
             <span className="text-slate-500"> — PDF, DOC, ZIP, or images</span>
           </p>
-          <p className="text-xs text-slate-400">Max 25 MB — attached to your application email</p>
+          <p className="text-xs text-slate-400">
+            You can select multiple files. Total max 25 MB.
+          </p>
         </button>
-        {file && (
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/15 bg-white px-4 py-3 text-sm text-slate-700">
-            <span className="min-w-0 truncate font-medium" title={file.name}>
-              {file.name}
-            </span>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="shrink-0 rounded-full"
-              onClick={() => {
-                if (inputRef.current) inputRef.current.value = "";
-                onFileChange(null);
-              }}
-            >
-              Remove
-            </Button>
+        {files.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-xs text-slate-500">
+              {files.length} file{files.length === 1 ? "" : "s"} attached • {formatBytes(totalSize)}
+            </p>
+            <ul className="space-y-2">
+              {files.map((f, i) => (
+                <li
+                  key={`${f.name}-${i}`}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/15 bg-white px-4 py-3 text-sm text-slate-700"
+                >
+                  <div className="flex min-w-0 items-center gap-2">
+                    <FileText className="h-4 w-4 shrink-0 text-primary" />
+                    <span className="min-w-0 truncate font-medium" title={f.name}>
+                      {f.name}
+                    </span>
+                    <span className="shrink-0 text-xs text-slate-500">
+                      ({formatBytes(f.size)})
+                    </span>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0 rounded-full gap-1"
+                    onClick={() => onRemoveFile(i)}
+                    aria-label={`Remove ${f.name}`}
+                  >
+                    <X className="h-3 w-3" />
+                    Remove
+                  </Button>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
         {fileError && (

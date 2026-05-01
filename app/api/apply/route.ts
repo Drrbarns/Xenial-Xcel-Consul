@@ -12,6 +12,7 @@ type ApplicationData = {
   personal: Record<string, string>;
   professional: Record<string, string>;
   roles: string[];
+  otherRole?: string;
   salary: string;
   sponsorship: Record<string, string>;
   fees: Record<string, string>;
@@ -54,7 +55,11 @@ function buildEmailHtml(data: ApplicationData): string {
     .map(([k, v]) => row(k, v))
     .join("");
 
-  const roles = row("Applied Roles", data.roles.join(", "));
+  const rolesList = [...data.roles];
+  if (data.otherRole && data.otherRole.trim()) {
+    rolesList.push(`Other: ${data.otherRole.trim()}`);
+  }
+  const roles = row("Applied Roles", rolesList.join(", "));
   const salary = row("Expected Salary", data.salary);
 
   const sponsorship = Object.entries(data.sponsorship)
@@ -112,10 +117,12 @@ function isApplicationData(data: unknown): data is ApplicationData {
   );
 }
 
+const MAX_TOTAL_ATTACHMENT_BYTES = 25 * 1024 * 1024;
+
 export async function POST(request: Request) {
   try {
     let data: ApplicationData;
-    let file: File | null = null;
+    let files: File[] = [];
 
     const ct = request.headers.get("content-type") || "";
     if (ct.includes("multipart/form-data")) {
@@ -135,8 +142,13 @@ export async function POST(request: Request) {
           { status: 400 },
         );
       }
-      const att = form.get("attachment");
-      file = att instanceof File && att.size > 0 ? att : null;
+      const incoming = [
+        ...form.getAll("attachments"),
+        ...form.getAll("attachment"),
+      ];
+      files = incoming.filter(
+        (att): att is File => att instanceof File && att.size > 0,
+      );
     } else {
       const body = await request.json();
       if (!isApplicationData(body)) {
@@ -162,16 +174,36 @@ export async function POST(request: Request) {
     );
 
     let attachments: { filename: string; content: Buffer }[] | undefined;
-    if (file) {
-      if (file.size > MAX_ATTACHMENT_BYTES) {
-        return NextResponse.json(
-          { success: false, message: "Combined document must be 25 MB or smaller." },
-          { status: 400 },
-        );
+    if (files.length > 0) {
+      let total = 0;
+      const acc: { filename: string; content: Buffer }[] = [];
+      const seenNames = new Map<string, number>();
+      for (const f of files) {
+        if (f.size > MAX_ATTACHMENT_BYTES) {
+          return NextResponse.json(
+            { success: false, message: `"${f.name}" is larger than 25 MB.` },
+            { status: 400 },
+          );
+        }
+        total += f.size;
+        if (total > MAX_TOTAL_ATTACHMENT_BYTES) {
+          return NextResponse.json(
+            { success: false, message: "Combined attachments exceed 25 MB. Please remove a file or send via WhatsApp." },
+            { status: 400 },
+          );
+        }
+        let filename = safeFilename(f.name);
+        const count = seenNames.get(filename) ?? 0;
+        if (count > 0) {
+          const dot = filename.lastIndexOf(".");
+          filename = dot > 0
+            ? `${filename.slice(0, dot)}-${count}${filename.slice(dot)}`
+            : `${filename}-${count}`;
+        }
+        seenNames.set(safeFilename(f.name), count + 1);
+        acc.push({ filename, content: Buffer.from(await f.arrayBuffer()) });
       }
-      attachments = [
-        { filename: safeFilename(file.name), content: Buffer.from(await file.arrayBuffer()) },
-      ];
+      attachments = acc;
     }
 
     let resend;
